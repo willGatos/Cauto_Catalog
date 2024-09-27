@@ -17,6 +17,7 @@ import { Toaster } from "react-hot-toast";
 export const pages: Page[] = [
   { path: "/", component: PageHome2 },
   { path: "/product-detail", component: ProductDetailPage },
+  { path: "/product-detail", component: ProductDetailPage },
   { path: "/page-collection", component: PageCollection2 },
   { path: "/checkout", component: CheckoutPage },
   { path: "/login", component: PageLogin },

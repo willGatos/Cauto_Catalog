@@ -1,6 +1,6 @@
 // CartContext.js
-import { createContext, useReducer } from "react";
-import React from 'react'
+import { createContext, Dispatch, useReducer } from "react";
+import React from "react";
 // Define initial state
 const initialState = {
   items: [],
@@ -24,8 +24,20 @@ const cartReducer = (state, action) => {
   }
 };
 
+type CartAction = {
+  // Define the structure of your actions
+  type: string;
+  payload?: any;
+};
+
+// Define the context type
+type CartContextType = {
+  state: { items: any[] };
+  dispatch: Dispatch<CartAction>;
+};
+
 // Create context with a default value
-export const CartContext = createContext({
+export const CartContext = createContext<CartContextType>({
   state: initialState,
   dispatch: () => {}, // Default dispatch function does nothing
 });
@@ -38,5 +50,5 @@ export const CartProvider = ({ children }) => {
     <CartContext.Provider value={{ state, dispatch }}>
       {children}
     </CartContext.Provider>
-  )
+  );
 };

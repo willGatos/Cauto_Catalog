@@ -4,6 +4,7 @@ module.exports = {
       project: './tsconfig.json'
     },
     rules: {
-      'padded-blocks': 'off'
+      'padded-blocks': 'off',
+      "no-unused-vars": "off" 
     }
   };

@@ -1,29 +1,23 @@
-import React, { FC, useState } from "react";
-import ButtonPrimary from "shared/Button/ButtonPrimary";
-import LikeButton from "components/LikeButton";
-import AccordionInfo from "./AccordionInfo";
+import {
+  SparklesIcon
+} from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "components/BagIcon";
 import NcInputNumber from "components/NcInputNumber";
-import { PRODUCTS } from "data/data";
-import {
-  NoSymbolIcon,
-  ClockIcon,
-  SparklesIcon,
-} from "@heroicons/react/24/outline";
-import IconDiscount from "components/IconDiscount";
+import NotifyAddTocart from "components/NotifyAddTocart";
 import Prices from "components/Prices";
-import toast from "react-hot-toast";
+import ReviewItem from "components/ReviewItem";
 import SectionSliderProductCard from "components/SectionSliderProductCard";
+import { PRODUCTS } from "data/data";
 import detail1JPG from "images/products/detail1.jpg";
 import detail2JPG from "images/products/detail2.jpg";
 import detail3JPG from "images/products/detail3.jpg";
-import Policy from "./Policy";
-import ReviewItem from "components/ReviewItem";
+import React, { FC, useState } from "react";
+import toast from "react-hot-toast";
+import ButtonPrimary from "shared/Button/ButtonPrimary";
 import ButtonSecondary from "shared/Button/ButtonSecondary";
-import SectionPromo2 from "components/SectionPromo2";
-import ModalViewAllReviews from "./ModalViewAllReviews";
-import NotifyAddTocart from "components/NotifyAddTocart";
+import AccordionInfo from "./AccordionInfo";
+import Policy from "./Policy";
 
 export interface ProductDetailPageProps {
   className?: string;
@@ -149,8 +143,6 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
       </div>
     );
   };
-
-
 
   const renderSectionContent = () => {
     return (
@@ -328,7 +320,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
                   alt="product detail 1"
                 />
               </div>
-              
+
               {/* META FAVORITES 
               {renderStatus()}
               <LikeButton className="absolute right-3 top-3 " />
@@ -364,8 +356,6 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
             <Policy />
           </div>*/}
         <div className="mt-12 sm:mt-16 space-y-10 sm:space-y-16">
-          
-
           {renderDetailSection()}
 
           {/* <hr className="border-slate-200 dark:border-slate-700" />*/}
@@ -388,7 +378,6 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
             <SectionPromo2 />
           </div>
           */}
-          
         </div>
       </main>
 
@@ -399,7 +388,6 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
         onCloseModalViewAllReviews={() => setIsOpenModalViewAllReviews(false)}
       />
       */}
-      
     </div>
   );
 };

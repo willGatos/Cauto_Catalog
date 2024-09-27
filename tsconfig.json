@@ -25,7 +25,6 @@
     "noImplicitThis": false,
     "strictNullChecks": false,
     "checkJs": false,
-    "typ"
   },
   "include": [
     "src"
