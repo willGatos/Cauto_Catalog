@@ -9,6 +9,8 @@ import Radio from "shared/Radio/Radio";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import MySwitch from "components/MySwitch";
 import baseService from "services/baseService";
+import supabase from "services/baseService";
+import { productsService } from "services/productsService";
 
 // DEMO DATA
 const DATA_categories = [
@@ -74,10 +76,20 @@ const TabFilters = () => {
   const [colorsState, setColorsState] = useState<string[]>([]);
   const [sizesState, setSizesState] = useState<string[]>([]);
   const [sortOrderStates, setSortOrderStates] = useState<string>("");
-
+  const [categoriesSelected, setCategoriesSelected] = useState([]);
+  const [attributesSelected, setAttributesSelected] = useState([]);
   //
-  const closeModalMoreFilter = () => setisOpenMoreFilter(false);
+  const closeModalMoreFilter = () => {
+    getProductsWithFilters(categoriesSelected, attributesSelected).then(
+      console.log
+    );
+    setAttributesSelected([])
+    setCategoriesSelected([])
+    setisOpenMoreFilter(false);}
   const openModalMoreFilter = () => setisOpenMoreFilter(true);
+
+  const [attributes, setAttributes] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   //
   const handleChangeCategories = (checked: boolean, name: string) => {
@@ -503,9 +515,9 @@ const TabFilters = () => {
   };
 
   // OK
-  const renderTabsSize = () => {
+  const renderTabsSize = (attribute, values, key) => {
     return (
-      <Popover className="relative">
+      <Popover key={key} className="relative">
         {({ open, close }) => (
           <>
             <Popover.Button
@@ -554,7 +566,7 @@ const TabFilters = () => {
                 />
               </svg>
 
-              <span className="ml-2">Sizes</span>
+              <span className="ml-2">{attribute}</span>
               {!sizesState.length ? (
                 <ChevronDownIcon className="w-4 h-4 ml-3" />
               ) : (
@@ -573,11 +585,11 @@ const TabFilters = () => {
               <Popover.Panel className="absolute z-40 w-screen max-w-sm px-4 mt-3 left-0 sm:px-0 lg:max-w-sm">
                 <div className="overflow-hidden rounded-2xl shadow-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700">
                   <div className="relative flex flex-col px-5 py-6 space-y-5">
-                    {DATA_sizes.map((item) => (
-                      <div key={item.name} className="">
+                    {values.map((item) => (
+                      <div key={item.id} className="item">
                         <Checkbox
-                          name={item.name}
-                          label={item.name}
+                          name={item.value}
+                          label={item.value}
                           defaultChecked={sizesState.includes(item.name)}
                           onChange={(checked) =>
                             handleChangeSizes(checked, item.name)
@@ -698,7 +710,6 @@ const TabFilters = () => {
                             $
                           </span>
                           <input
-                            
                             type="text"
                             name="minPrice"
                             disabled
@@ -720,7 +731,6 @@ const TabFilters = () => {
                             $
                           </span>
                           <input
-  
                             type="text"
                             disabled
                             name="maxPrice"
@@ -810,37 +820,29 @@ const TabFilters = () => {
       </div>
     );
   };
-
+  const handleChecked = (checked: boolean, name: string, setAction) => {
+    checked
+      ? setAction((prev) => [...prev, name])
+      : setAction((prev) => prev.filter((i) => i !== name));
+  };
   // OK
-  const renderMoreFilterItem = (
-    data: {
-      name: string;
-      description?: string;
-      defaultChecked?: boolean;
-    }[]
-  ) => {
-    const list1 = data.filter((_, i) => i < data.length / 2);
-    const list2 = data.filter((_, i) => i >= data.length / 2);
+  const renderMoreFilterItem = (name) => {
+    console.log(attributesSelected, categoriesSelected);
+
+    // const list1 = data.filter((_, i) => i < data.length / 2);
+    // const list2 = data.filter((_, i) => i >= data.length / 2);
     return (
       <div className="grid grid-cols-2 gap-x-4 sm:gap-x-8 gap-8">
         <div className="flex flex-col space-y-5">
-          {list1.map((item) => (
+          {name.map((item) => (
             <Checkbox
-              key={item.name}
-              name={item.name}
+              key={item.value}
+              name={item.value}
               subLabel={item.description}
-              label={item.name}
-              defaultChecked={!!item.defaultChecked}
-            />
-          ))}
-        </div>
-        <div className="flex flex-col space-y-5">
-          {list2.map((item) => (
-            <Checkbox
-              key={item.name}
-              name={item.name}
-              subLabel={item.description}
-              label={item.name}
+              label={item.value}
+              onChange={(value) =>
+                handleChecked(value, item.value, setAttributesSelected)
+              }
               defaultChecked={!!item.defaultChecked}
             />
           ))}
@@ -848,20 +850,33 @@ const TabFilters = () => {
       </div>
     );
   };
-  useEffect(()=>{
-    baseService
-    .get("products/attributes")
-    .then((e) => console.log("attr",e.data))
-    .catch()
 
-    baseService
-    .get("/products/categories")
-    .then((e) => console.log("cate",e.data))
-    .catch()
-  },[])
+  // OK
+  const renderMoreFilterCategorie = (names) => {
+    console.log(attributesSelected, categoriesSelected);
+    // const list1 = data.filter((_, i) => i < data.length / 2);
+    // const list2 = data.filter((_, i) => i >= data.length / 2);
+    return (
+      <div className="grid grid-cols-2 gap-x-4 sm:gap-x-8 gap-8">
+        <div className="flex flex-col space-y-5">
+          {names.map((item) => (
+            <Checkbox
+              key={item.name}
+              name={item.name}
+              label={item.name}
+              onChange={(value) =>
+                handleChecked(value, item.id, setCategoriesSelected)
+              }
+              defaultChecked={!!item.defaultChecked}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   // FOR RESPONSIVE MOBILE
   const renderTabMobileFilter = () => {
-    
     return (
       <div className="flex-shrink-0">
         <span className="block flex-shrink-0">
@@ -904,7 +919,6 @@ const TabFilters = () => {
             </span>
           </ButtonPrimary>
         </span>
-       
 
         <Transition appear show={isOpenMoreFilter} as={Fragment}>
           <Dialog
@@ -961,28 +975,23 @@ const TabFilters = () => {
                       <div className="py-7">
                         <h3 className="text-xl font-medium">Categorías</h3>
                         <div className="mt-6 relative ">
-                          {renderMoreFilterItem(DATA_categories)}
-                        </div>
-                      </div>
-                      {/* --------- */}
-                      {/* ---- */}
-                      <div className="py-7">
-                        <h3 className="text-xl font-medium">Colors</h3>
-                        <div className="mt-6 relative ">
-                          {renderMoreFilterItem(DATA_colors)}
-                        </div>
-                      </div>
-                      {/* --------- */}
-                      {/* ---- */}
-                      <div className="py-7">
-                        <h3 className="text-xl font-medium">Size</h3>
-                        <div className="mt-6 relative ">
-                          {renderMoreFilterItem(DATA_sizes)}
+                          {renderMoreFilterCategorie(categories)}
                         </div>
                       </div>
 
                       {/* --------- */}
                       {/* ---- */}
+                      {attributes.map((att) => (
+                        <div className="py-7">
+                          <h3 className="text-xl font-medium">{att.name}</h3>
+                          <div className="mt-6 relative ">
+                            {renderMoreFilterItem(att.value)}
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* --------- */}
+                      {/* ---- 
                       <div className="py-7">
                         <h3 className="text-xl font-medium">Range Prices</h3>
                         <div className="mt-6 relative ">
@@ -1052,9 +1061,9 @@ const TabFilters = () => {
                           </div>
                         </div>
                       </div>
-
+                        */}
                       {/* --------- */}
-                      {/* ---- */}
+                      {/* ---- 
                       <div className="py-7">
                         <h3 className="text-xl font-medium">Sort Order</h3>
                         <div className="mt-6 relative ">
@@ -1072,9 +1081,9 @@ const TabFilters = () => {
                           </div>
                         </div>
                       </div>
-
+                        */}
                       {/* --------- */}
-                      {/* ---- */}
+                      {/* ---- 
                       <div className="py-7">
                         <h3 className="text-xl font-medium">On sale!</h3>
                         <div className="mt-6 relative ">
@@ -1086,6 +1095,7 @@ const TabFilters = () => {
                           />
                         </div>
                       </div>
+                      */}
                     </div>
                   </div>
 
@@ -1100,13 +1110,13 @@ const TabFilters = () => {
                       }}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Clear
+                      Limpiar Selección
                     </ButtonThird>
                     <ButtonPrimary
                       onClick={closeModalMoreFilter}
                       sizeClass="px-4 py-2 sm:px-5"
                     >
-                      Apply
+                      Buscar
                     </ButtonPrimary>
                   </div>
                 </div>
@@ -1117,21 +1127,53 @@ const TabFilters = () => {
       </div>
     );
   };
-  useEffect(()=>{
-    baseService
-    .get("products/categories")
-    .then(e => console.log(e))
-    .catch(e=> console.log(e))
-  },[])
+  async function getProductsWithFilters(category, attributes) {
+    try {
+      // Preparar los parámetros de la consulta
+      const params = {
+        p_attribute_value: attributes,
+        p_category_ids: category,
+      };
+
+      // Realizar la consulta SQL personalizada
+      const { data, error } = await supabase.rpc(
+        "get_filtered_products_with_hierarchy",
+        params
+      );
+
+      if (error) throw error;
+
+      return data;
+    } catch (error) {
+      console.error("Error al obtener productos:", error.message);
+      return null;
+    }
+  }
+  useEffect(() => {
+    productsService
+      .getCategories()
+      .then((e) => setCategories(e))
+      .catch((e) => console.log(e));
+
+    productsService
+      .getAttributesAndValues()
+      .then((data) => {
+        setAttributes(data);
+      })
+      .catch((e) => console.log(e));
+
+  }, []);
+
   return (
     <div className=" lg:space-x-4">
       {/* FOR DESKTOP */}
       <div className="hidden lg:flex flex-1 space-x-4">
-        {renderTabsPriceRage()}
-        {renderTabsCategories()}
-        {renderTabsColor()}
-        {renderTabsSize()}
-        {renderTabIsOnsale()}
+        {/*renderTabsPriceRage()*/}
+        {/*renderTabsCategories()*/}
+        {/*renderTabsColor()*/}
+        {attributes.map((att, key) => renderTabsSize(att.name, att.value, key))}
+        {}
+        {/*renderTabIsOnsale()*/}
         <div className="!ml-auto">{renderTabsSortOrder()}</div>
       </div>
 

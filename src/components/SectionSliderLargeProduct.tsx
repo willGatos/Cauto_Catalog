@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useId } from "react";
+import React, { FC, useEffect, useId, useState } from "react";
 import Heading from "components/Heading/Heading";
 import Glide from "@glidejs/glide";
 import CollectionCard from "./CollectionCard";
 import CollectionCard2 from "./CollectionCard2";
 import { Link } from "react-router-dom";
 import { DEMO_LARGE_PRODUCTS } from "./SectionSliderLargeProduct2";
+import { offersService } from "services/offersService";
 
 export interface SectionSliderLargeProductProps {
   className?: string;
@@ -18,9 +19,34 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
 }) => {
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
-
+  async function fetchOffers() {
+    try {
+      const offers = await offersService.getAllOffers();
+      // For each offer, fetch its products and variations
+      for (const offer of offers) {
+        offer.products = await offersService.getOfferProductsByOfferId(
+          offer.id
+        );
+        for (const product of offer.products) {
+          product.variations =
+            await offersService.getOfferProductVariationsByOfferProductId(
+              product.id
+            );
+        }
+      }
+      return offers;
+    } catch (error) {
+      console.error("Error fetching offers:", error);
+      return []; // Or handle the error appropriately
+    }
+  }
+  const [offers, setOffers] = useState([]);
   useEffect(() => {
-    // @ts-ignore
+    fetchOffers().then(setOffers);
+  }, []);
+  useEffect(() => {
+    // @ts-ignoreconst [offers, setOffers] = useState<Offer[]>([]);
+
     const OPTIONS: Glide.Options = {
       perView: 3,
       gap: 32,
@@ -57,7 +83,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     cardStyle === "style1" ? CollectionCard : CollectionCard2;
 
   return (
-    <div className={`nc-SectionSliderLargeProduct ${className}`}>
+    <div className={`nc-SectionSliderLargeProduct ${className} my-20`}>
       <div className={`${UNIQUE_CLASS} flow-root`}>
         <Heading isCenter={false} hasNextPrev>
           Chosen by our experts
@@ -81,7 +107,9 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
                   <div className="h-[410px] bg-black/5 dark:bg-neutral-800"></div>
                   <div className="absolute inset-y-6 inset-x-10  flex flex-col items-center justify-center">
                     <div className="flex items-center justify-center relative">
-                      <span className="text-xl font-semibold">More items</span>
+                      <span className="text-xl font-semibold">
+                        Más Artículos
+                      </span>
                       <svg
                         className="absolute left-full w-5 h-5 ml-2 rotate-45 group-hover:scale-110 transition-transform"
                         viewBox="0 0 24 24"
@@ -106,7 +134,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
                         />
                       </svg>
                     </div>
-                    <span className="text-sm mt-1">Show me more</span>
+                    <span className="text-sm mt-1">Enseñame Más</span>
                   </div>
                 </div>
               </Link>

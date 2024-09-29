@@ -5,7 +5,6 @@ import Footer from "shared/Footer/Footer";
 import PageHome2 from "containers/PageHome/PageHome2";
 import Page404 from "containers/Page404/Page404";
 //import AccountPage from "containers/AccountPage/AccountPage";
-import PageLogin from "containers/PageLogin/PageLogin";
 import SiteHeader from "containers/SiteHeader";
 import ProductDetailPage from "containers/ProductDetailPage/ProductDetailPage";
 import CheckoutPage from "containers/PageCheckout/CheckoutPage";
@@ -20,7 +19,6 @@ export const pages: Page[] = [
   { path: "/product-detail", component: ProductDetailPage },
   { path: "/page-collection", component: PageCollection2 },
   { path: "/checkout", component: CheckoutPage },
-  { path: "/login", component: PageLogin },
 ];
 
 const MyRoutes = () => {

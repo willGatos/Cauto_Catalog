@@ -1,11 +1,8 @@
-import axios from "axios";
-import {Buffer} from 'buffer';
+import { createClient } from '@supabase/supabase-js';
 
-const encodedToken = Buffer.from("ck_b37e5d2c2b254b85266e22e0bb9a8efad58b056a:cs_5862a99fa95081b4f3a45a6084ef498258995db7").toString('base64');
-  var config = {
-    baseURL: "https://colegios.innet.es/wp-json/wc/v3/",
-    headers: { 'Authorization': 'Basic '+ encodedToken },
-  };
-const baseService = axios.create(config);
+const supabase = createClient(
+  "https://lnuqlwcfdxstcdbjfyun.supabase.co/", 
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxudXFsd2NmZHhzdGNkYmpmeXVuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjcxMDAxOTcsImV4cCI6MjA0MjY3NjE5N30.a2Ds7gucyJyQr1l5frs7tfHQbZZkZeLK31s5AEy9jjo"
+);
 
-export default baseService;
+export default supabase;
