@@ -7,6 +7,7 @@ import Page404 from "containers/Page404/Page404";
 //import AccountPage from "containers/AccountPage/AccountPage";
 import SiteHeader from "containers/SiteHeader";
 import ProductDetailPage from "containers/ProductDetailPage/ProductDetailPage";
+import OffersDetailPage from "containers/ProductDetailPage/OffersPage";
 import CheckoutPage from "containers/PageCheckout/CheckoutPage";
 import PageCollection2 from "containers/PageCollection2";
 import { Toaster } from "react-hot-toast";
@@ -16,7 +17,7 @@ import { Toaster } from "react-hot-toast";
 export const pages: Page[] = [
   { path: "/", component: PageHome2 },
   { path: "/product-detail", component: ProductDetailPage },
-  { path: "/product-detail", component: ProductDetailPage },
+  { path: "/offer-detail/:id", component: OffersDetailPage },
   { path: "/page-collection", component: PageCollection2 },
   { path: "/checkout", component: CheckoutPage },
 ];

@@ -6,45 +6,51 @@ import CollectionCard2 from "./CollectionCard2";
 import { Link } from "react-router-dom";
 import { DEMO_LARGE_PRODUCTS } from "./SectionSliderLargeProduct2";
 import { offersService } from "services/offersService";
-
+import supabase from "services/baseService";
 export interface SectionSliderLargeProductProps {
   className?: string;
   itemClassName?: string;
   cardStyle?: "style1" | "style2";
 }
-
+export const fetchOffers = async () => {
+  try {
+    const offers = await offersService.getAllOffers();
+    // For each offer, fetch its products and variations
+    for (const offer of offers) {
+      offer.products = await offersService.getOfferProductsByOfferId(
+        offer.id
+      );
+      for (const product of offer.products) {
+        product.variations =
+          await offersService.getOfferProductVariationsByOfferProductId(
+            product.id
+          );
+      }
+    }
+    return offers;
+  } catch (error) {
+    console.error("Error fetching offers:", error);
+    return []; // Or handle the error appropriately
+  }
+}
+export interface OfferWithImages
+  extends Omit<(typeof DEMO_LARGE_PRODUCTS)[0], "images"> {
+  images: string[];
+  description: string;
+}
 const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
   className = "",
   cardStyle = "style2",
 }) => {
+  const [offers, setOffers] = useState<OfferWithImages[]>([]);
+  const [loading, setLoading] = useState(true);
+
+
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
-  async function fetchOffers() {
-    try {
-      const offers = await offersService.getAllOffers();
-      // For each offer, fetch its products and variations
-      for (const offer of offers) {
-        offer.products = await offersService.getOfferProductsByOfferId(
-          offer.id
-        );
-        for (const product of offer.products) {
-          product.variations =
-            await offersService.getOfferProductVariationsByOfferProductId(
-              product.id
-            );
-        }
-      }
-      return offers;
-    } catch (error) {
-      console.error("Error fetching offers:", error);
-      return []; // Or handle the error appropriately
-    }
-  }
-  const [offers, setOffers] = useState([]);
+
   useEffect(() => {
-    fetchOffers().then(setOffers);
-  }, []);
-  useEffect(() => {
+
     // @ts-ignoreconst [offers, setOffers] = useState<Offer[]>([]);
 
     const OPTIONS: Glide.Options = {
@@ -73,30 +79,31 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     };
 
     let slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
-    slider.mount();
+    fetchOffers().then(setOffers).then(()=>    slider.mount()  )
+
+
     return () => {
       slider.destroy();
     };
-  }, [UNIQUE_CLASS]);
 
-  const MyCollectionCard =
-    cardStyle === "style1" ? CollectionCard : CollectionCard2;
+  }, [UNIQUE_CLASS]);
 
   return (
     <div className={`nc-SectionSliderLargeProduct ${className} my-20`}>
       <div className={`${UNIQUE_CLASS} flow-root`}>
         <Heading isCenter={false} hasNextPrev>
-          Chosen by our experts
+          Nuestras Mejores Ofertas
         </Heading>
         <div className="glide__track" data-glide-el="track">
           <ul className="glide__slides">
-            {DEMO_LARGE_PRODUCTS.map((product, index) => (
+            {offers.map((offer, index) => (
               <li className={`glide__slide`} key={index}>
-                <MyCollectionCard
-                  name={product.name}
-                  price={product.price}
-                  imgs={product.images}
-                  description={product.desc}
+                <CollectionCard2
+                  name={offer.name}
+                  price={offer.price}
+                  imgs={offer.images}
+                  description={offer.desc}
+                  id={offer.id}
                 />
               </li>
             ))}

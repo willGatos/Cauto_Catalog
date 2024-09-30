@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import NcImage from "shared/NcImage/NcImage";
 import LikeButton from "./LikeButton";
@@ -20,10 +20,9 @@ export interface ProductCardProps {
   isLiked?: boolean;
 }
 
-const ProductCard: FC<ProductCardProps> = ({
+const ProductCard = ({
   className = "",
-  data = PRODUCTS[0],
-  isLiked,
+  data,
 }) => {
   const {
     name,
@@ -33,10 +32,11 @@ const ProductCard: FC<ProductCardProps> = ({
     variants,
     variantType,
     status,
-    images,
+    images=[],
   } = data;
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
+  const descRef = useRef(null)
 
   const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
@@ -63,12 +63,14 @@ const ProductCard: FC<ProductCardProps> = ({
     );
   };
 
+  useEffect(()=>{descRef.current.innerHTLM = description},[descRef])
+
   const renderProductCartOnNotify = ({ size }: { size?: string }) => {
     return (
       <div className="flex ">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
-            src={images[0].src}
+            src={images[0]}
             alt={name}
             className="h-full w-full object-cover object-center"
           />
@@ -189,7 +191,7 @@ const ProductCard: FC<ProductCardProps> = ({
   const renderGroupButtons = () => {
     return (
       <div className="absolute bottom-0 group-hover:bottom-4 inset-x-1 flex justify-center opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-        <ButtonPrimary
+        {/* <ButtonPrimary
           className="shadow-lg"
           fontSize="text-xs"
           sizeClass="py-2 px-4"
@@ -197,7 +199,7 @@ const ProductCard: FC<ProductCardProps> = ({
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
           <span className="ml-1">Add to bag</span>
-        </ButtonPrimary>
+        </ButtonPrimary> */}
         <ButtonSecondary
           className="ml-1.5 bg-white hover:!bg-gray-100 hover:text-slate-900 transition-colors shadow-lg"
           fontSize="text-xs"
@@ -205,7 +207,7 @@ const ProductCard: FC<ProductCardProps> = ({
           onClick={() => setShowModalQuickView(true)}
         >
           <ArrowsPointingOutIcon className="w-3.5 h-3.5" />
-          <span className="ml-1">Quick view</span>
+          <span className="ml-1">Ver</span>
         </ButtonSecondary>
       </div>
     );
@@ -232,7 +234,6 @@ const ProductCard: FC<ProductCardProps> = ({
       </div>
     );
   };
-
   return (
     <>
       <div
@@ -245,7 +246,7 @@ const ProductCard: FC<ProductCardProps> = ({
           <Link to={"/product-detail"} className="block">
             <NcImage
               containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
-              src={images[0].src}
+              src={images[0]}
               className="object-cover w-full h-full drop-shadow-xl"
             />
           </Link>
@@ -271,8 +272,8 @@ const ProductCard: FC<ProductCardProps> = ({
               >
                 {name}
               </h2>
-              <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
-                {description}
+              <p ref={descRef}  className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
+                
               </p>
             </div>
           </div>

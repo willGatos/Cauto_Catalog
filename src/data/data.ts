@@ -112,9 +112,7 @@ export const PRODUCTS: Product[] = [
     name: "Rey Nylon Backpack",
     description: "Brown cockroach wings",
     price: 74,
-    images: [{
-      src: productImgs[16]
-    }],
+    images: [{ src: productImgs[16]}],
     category: "Category 1",
     tags: ["tag1", "tag2"],
     link: "/product-detail/",

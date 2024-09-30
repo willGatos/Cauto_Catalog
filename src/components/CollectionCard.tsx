@@ -6,11 +6,13 @@ import NcImage from "shared/NcImage/NcImage";
 import Prices from "./Prices";
 
 export interface CollectionCard2Props {
+  id: string | number;
   className?: string;
   imgs?: string[];
   name?: string;
   price?: number;
   description?: string;
+
 }
 
 const CollectionCard2: FC<CollectionCard2Props> = ({
@@ -19,6 +21,7 @@ const CollectionCard2: FC<CollectionCard2Props> = ({
   name = "Product Name",
   description = "Product Description",
   price,
+  id,
 }) => {
   return (
     <div className={`CollectionCard2 group relative ${className}`}>
@@ -57,15 +60,11 @@ const CollectionCard2: FC<CollectionCard2Props> = ({
               <span className="line-clamp-1">{description}</span>
             </span>
             <span className="h-5 mx-1 sm:mx-2 border-l border-slate-200 dark:border-slate-700"></span>
-            <StarIcon className="w-4 h-4 text-orange-400" />
-            <span className="text-sm ml-1 ">
-              <span className="line-clamp-1">4.9 (269 reviews)</span>
-            </span>
           </div>
         </div>
         <Prices className="mt-0.5 sm:mt-1 ml-4" price={price} />
       </div>
-      <Link to={"/product-detail-2"} className="absolute inset-0 "></Link>
+      <Link to={"/offer-detail/" + id} className="absolute inset-0 "></Link>
     </div>
   );
 };

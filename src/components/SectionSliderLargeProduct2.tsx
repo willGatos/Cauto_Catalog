@@ -171,7 +171,7 @@ const SectionSliderLargeProduct2: FC<SectionSliderLargeProduct2Props> = ({
             {DEMO_LARGE_PRODUCTS.map((item, index) => {
               return (
                 <li className={`glide__slide`}>
-                  <MyCollectionCard imgs={item.images} />
+                  <MyCollectionCard imgs={item.images}  id={1}/>
                 </li>
               );
             })}

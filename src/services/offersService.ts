@@ -173,6 +173,19 @@ const offersService = {
     }
 
     return offerProducts;
+  },// Get offer products by offer ID
+  async getOffersByOfferId(offerId: number) {
+    const { data: offerProducts, error } = await supabase
+      .from("offers")
+      .select("*")
+      .eq("id", offerId)
+      .single();
+
+    if (error) {
+      throw error;
+    }
+
+    return offerProducts;
   },
 
   // Get offer product variations by offer product ID
