@@ -11,22 +11,8 @@ import SectionHowItWork from "components/SectionHowItWork/SectionHowItWork";
 import SectionSliderProductCard from "components/SectionSliderProductCard";
 import { SPORT_PRODUCTS } from "data/data";
 import supabase from "services/baseService";
+import SlidesSection from 'components/SlidesSection'
 
-export const getSlides = async (shopId) => {
-  try {
-    const { data, error } = await supabase
-      .from("slides")
-      .select("*")
-      .eq("shop_id", shopId);
-
-    if (error) throw error;
-
-    return data;
-  } catch (error) {
-    console.error("Error fetching tables:", error);
-    throw error;
-  }
-};
 interface Slide {
   id: number;
   name: string;
@@ -34,49 +20,26 @@ interface Slide {
   created_at: string;
 }
 function PageHome2() {
-  const [products, setProducts] = useState([]);
-  const [sliders, setSliders] = useState<Slide[]>([{
-    id: 0,
-    name: "",
-    images: [],
-    created_at: "",
-  }]);
-  useEffect(() => {
-    getSlides(6).then(setSliders);
-  }, []);
 
   return (
     <div className="nc-PageHome2 relative overflow-hidden">
       <div className="container px-4">
         {/* SECTION HERO */}
         <SectionHero3 />
+        <SlidesSection/>
         <SectionSliderLargeProduct />
-        <div className="relative py-24 lg:py-32">
-          <BackgroundSection />
+        <div className="relative py-24">
           <SectionSliderProductCard
             data={SPORT_PRODUCTS.filter((_, i) => i < 8)}
             subHeading="New Sports equipment"
           />
         </div>
       </div>
-      {sliders.length > 0 &&
-        <div>
-          {sliders.map(slide =>(
-            <div>
-              {slide.images.map(img =>
-              <img src={img} alt={slide.name}/>
-              )}
-            </div>
-          ))}
-        </div>
-      }
+
+
+
       <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
-        {/* SECTION 
-        
-        <SectionHowItWork/>
-        
-        */}
-        <SectionGridFeatureItems data={products} />
+        <SectionGridFeatureItems/>
       </div>
     </div>
   );

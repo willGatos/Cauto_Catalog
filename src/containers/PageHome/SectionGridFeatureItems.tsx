@@ -3,19 +3,19 @@ import HeaderFilterSection from "components/HeaderFilterSection";
 import ProductCard from "components/ProductCard";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { Product } from "data/data";
-import { productsService } from 'services/productsService'
+import { productsService } from "services/productsService";
 //
 export interface SectionGridFeatureItemsProps {
-  data?: Product[];
+  product?: Product[];
 }
 
 const SectionGridFeatureItems: FC<SectionGridFeatureItemsProps> = ({
-  data,
+  product,
 }) => {
   const [products, setProduct] = useState([]);
   useEffect(() => {
-    productsService.getAllProducts().then(setProduct)
-  },[]);
+    productsService.getAllProducts().then(setProduct);
+  }, []);
   return (
     <div className="nc-SectionGridFeatureItems relative">
       <HeaderFilterSection />

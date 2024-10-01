@@ -71,8 +71,6 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
     name: "Category Pages",
     type: "dropdown",
     children: [
-
-      //TODO: Debe cargar por defecto todas las categorías y ponerlas en este array
       {
         id: ncNanoId(),
         href: "/page-collection",

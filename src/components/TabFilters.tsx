@@ -910,7 +910,7 @@ const TabFilters = () => {
               />
             </svg>
 
-            <span className="block truncate ml-2.5">Filtros</span>
+            <span className="block truncate ml-2.5">Buscar por Categorías</span>
             <span className="absolute top-1/2 -translate-y-1/2 right-5">
               <ChevronDownIcon
                 className={`w-5 h-5 ${isOpenMoreFilter ? "rotate-180" : ""}`}

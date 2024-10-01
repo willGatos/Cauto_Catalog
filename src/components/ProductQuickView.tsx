@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import LikeButton from "components/LikeButton";
 import { StarIcon } from "@heroicons/react/24/solid";
@@ -19,20 +19,181 @@ import detail3JPG from "images/products/detail3.jpg";
 import NotifyAddTocart from "./NotifyAddTocart";
 import AccordionInfo from "containers/ProductDetailPage/AccordionInfo";
 import { Link } from "react-router-dom";
+import supabase from "services/baseService";
+// Types.ts
+interface AttributeValue {
+  types: { name: string }
+  value: string
+}
 
+interface Variation {
+  id: number
+  name: string
+  price: number
+  stock: number
+  pictures: string[]
+  attribute_values: AttributeValue[]
+}
+
+const variationsData: Variation[] = [
+  {
+    id: 1,
+    name: "Camiseta Roja - Talla M",
+    price: 19.99,
+    stock: 50,
+    pictures: ["/placeholder.svg?height=150&width=150", "/placeholder.svg?height=150&width=150"],
+    attribute_values: [
+      { types: { name: "Color" }, value: "Rojo" },
+      { types: { name: "Talla" }, value: "M" }
+    ]
+  },
+  {
+    id: 2,
+    name: "Camiseta Azul - Talla L",
+    price: 21.99,
+    stock: 30,
+    pictures: ["/placeholder.svg?height=150&width=150", "/placeholder.svg?height=150&width=150", "/placeholder.svg?height=150&width=150"],
+    attribute_values: [
+      { types: { name: "Color" }, value: "Azul" },
+      { types: { name: "Talla" }, value: "L" }
+    ]
+  },
+  {
+    id: 3,
+    name: "Camiseta Verde - Talla S",
+    price: 18.99,
+    stock: 40,
+    pictures: ["/placeholder.svg?height=150&width=150"],
+    attribute_values: [
+      { types: { name: "Color" }, value: "Verde" },
+      { types: { name: "Talla" }, value: "S" }
+    ]
+  }
+]
+export interface Product {
+  id: number;
+  name: string;
+  description: string;
+  category_id: number;
+  created_at: string;
+  shop_id: number;
+  cost: number;
+  discount: number;
+  state: string;
+  gender: string;
+  commission: number;
+  type: string;
+  origin: string;
+  commission_type: string;
+  reference_currency: number;
+  owner_id: string;
+  sale_price: number | null;
+  standard_price: number;
+  status: number;
+  tax: number | null;
+  brand: string;
+  stock: number;
+  images: string[];
+  product_variations: ProductVariation[];
+}
+
+export interface ProductVariation {
+  id: number;
+  name: string;
+  price: number;
+  stock: number;
+  pictures: string[];
+  attribute_values: AttributeValue[];
+}
+
+
+// Interfaces for component props
+export interface ProductDetailsProps {
+  productId: string;
+}
+
+export interface ProductVariationItemProps {
+  variation: ProductVariation;
+}
+
+export const initialValues = {
+  id: 0,
+  name: "",
+  description: "",
+  category_id: 0,
+  created_at: "",
+  shop_id: 0,
+  cost: 0,
+  discount: 0,
+  state: "",
+  gender: "",
+  commission: 0,
+  type: "",
+  origin: "",
+  commission_type: "",
+  reference_currency: 0,
+  owner_id: "",
+  sale_price: null,
+  standard_price: 0,
+  status: 0,
+  tax: null,
+  brand: "",
+  stock: 0,
+  images: [],
+  product_variations: variationsData,
+  variations: [] as ProductVariation[],
+  loading: true,
+  error: null as string | null,
+};
+
+export const getProductbyId = async (id) => {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select(
+        "*,product_variations(*, attribute_values(value, types: attributes(name)))"
+      ) //
+      .eq("id", id)
+      .single();
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    console.error("Error fetching tables:", error);
+    throw error;
+  }
+};
 export interface ProductQuickViewProps {
   className?: string;
 }
 
 const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
-  
   const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
-
+  const [product, setProduct] = useState(initialValues);
   const [variantActive, setVariantActive] = React.useState(0);
   const [sizeSelected, setSizeSelected] = React.useState(sizes ? sizes[0] : "");
   const [qualitySelected, setQualitySelected] = React.useState(1);
 
+  useEffect(() => {
+    getProductbyId(1).then((prod) => {
+      console.log('SOL',prod);
+      const variations = prod.product_variations.map((variation: any) => ({
+        id: variation.id,
+        name: variation.name,
+        price: variation.price,
+        stock: variation.stock,
+        pictures: variation.pictures,
+        attribute_values: variation.attribute_values.map((attr: any) => ({
+          types: { name: attr.types.name },
+          value: attr.value,
+        })),
+      }));
+      prod.product_variations = variations;
+      setProduct(prod);
+    });
+  }, []);
   const notifyAddTocart = () => {
     toast.custom(
       (t) => (
@@ -48,96 +209,53 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
     );
   };
 
-  const renderVariants = () => {
-    if (!variants || !variants.length) {
-      return null;
+  const variations = (variationsData) => {
+    if (!variationsData || variationsData.length === 0) {
+      return (
+        <div>No variations available</div>
+      );
     }
-
     return (
-      <div>
-        <label htmlFor="">
-          <span className="text-sm font-medium">
-            Color:
-            <span className="ml-1 font-semibold">
-              {variants[variantActive].name}
-            </span>
-          </span>
-        </label>
-        <div className="flex mt-2.5">
-          {variants.map((variant, index) => (
-            <div
-              key={index}
-              onClick={() => setVariantActive(index)}
-              className={`relative flex-1 max-w-[75px] h-10 rounded-full border-2 cursor-pointer ${
-                variantActive === index
-                  ? "border-primary-6000 dark:border-primary-500"
-                  : "border-transparent"
-              }`}
-            >
-              <div className="absolute inset-0.5 rounded-full overflow-hidden z-0">
-                <img
-                  src={variant.thumbnail}
-                  alt=""
-                  className="absolute w-full h-full object-cover"
-                />
+      <div className="container mx-auto p-4">
+        <h2 className="text-2xl font-bold mb-6">Variaciones del Producto</h2>
+        <div className="space-y-8">
+          {variationsData.map((variation) => {
+            const attribute_values = variation.attribute_values ? variation.attribute_values :[];
+            console.log('s', variation)
+            const pictures = variation.pictures;
+
+            return (
+            <div key={variation.id} className="border-b pb-8">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-4">
+                  <h3 className="text-xl font-semibold">{variation.name}</h3>
+                  <div className="bg-primary text-primary-foreground p-2 text-lg font-bold">
+                    ${variation.price.toFixed(2)}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {/* {attribute_values.map((attr, index) => (
+                    <label key={index}>
+                      {attr.types.name}: {attr.value}
+                    </label>
+                  ))} */}
+                </div>
+              </div>
+              <div className="flex flex-wrap gap-4">
+                {pictures?.map((pic, index) => (
+                  <img
+                    key={index}
+                    src={pic}
+                    alt={`${variation.name} - Imagen ${index + 1}`}
+                    width={150}
+                    height={150}
+                    className="rounded-md object-cover"
+                  />
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderSizeList = () => {
-    if (!allOfSizes || !sizes || !sizes.length) {
-      return null;
-    }
-    return (
-      <div>
-        <div className="flex justify-between font-medium text-sm">
-          <label htmlFor="">
-            <span className="">
-              Size:
-              <span className="ml-1 font-semibold">{sizeSelected}</span>
-            </span>
-          </label>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="##"
-            className="text-primary-6000 hover:text-primary-500"
-          >
-            See sizing chart
-          </a>
-        </div>
-        <div className="grid grid-cols-5 sm:grid-cols-7 gap-2 mt-2.5">
-          {allOfSizes.map((size, index) => {
-            const isActive = size === sizeSelected;
-            const sizeOutStock = !sizes.includes(size);
-            return (
-              <div
-                key={index}
-                className={`relative h-10 sm:h-11 rounded-2xl border flex items-center justify-center 
-                text-sm sm:text-base uppercase font-semibold select-none overflow-hidden z-0 ${
-                  sizeOutStock
-                    ? "text-opacity-20 dark:text-opacity-20 cursor-not-allowed"
-                    : "cursor-pointer"
-                } ${
-                  isActive
-                    ? "bg-primary-6000 border-primary-6000 text-white hover:bg-primary-6000"
-                    : "border-slate-300 dark:border-slate-600 text-slate-900 dark:text-slate-200 hover:bg-neutral-50 dark:hover:bg-neutral-700"
-                }`}
-                onClick={() => {
-                  if (sizeOutStock) {
-                    return;
-                  }
-                  setSizeSelected(size);
-                }}
-              >
-                {size}
-              </div>
-            );
-          })}
+          )}
+          )}
         </div>
       </div>
     );
@@ -190,7 +308,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
         {/* ---------- 1 HEADING ----------  */}
         <div>
           <h2 className="text-2xl font-semibold hover:text-primary-6000 transition-colors">
-            <Link to="/product-detail">Heavy Weight Shoes</Link>
+            {product.name}
           </h2>
 
           <div className="flex items-center mt-5 space-x-4 sm:space-x-5">
@@ -225,24 +343,14 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
           </div>
         </div>
 
-        {/* ---------- 3 VARIANTS AND SIZE LIST ----------  */}
-        <div className="">{renderVariants()}</div>
-        <div className="">{renderSizeList()}</div>
-
         {/*  ---------- 4  QTY AND ADD TO CART BUTTON */}
         <div className="flex space-x-3.5">
-          <div className="flex items-center justify-center bg-slate-100/70 dark:bg-slate-800/70 px-2 py-3 sm:p-3.5 rounded-full">
-            <NcInputNumber
-              defaultValue={qualitySelected}
-              onChange={setQualitySelected}
-            />
-          </div>
           <ButtonPrimary
             className="flex-1 flex-shrink-0"
             onClick={notifyAddTocart}
           >
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
-            <span className="ml-3">Add to cart</span>
+            <span className="ml-3">Descargar Imagen</span>
           </ButtonPrimary>
         </div>
 
@@ -254,24 +362,8 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
         <AccordionInfo
           data={[
             {
-              name: "Description",
-              content:
-                "Fashion is a form of self-expression and autonomy at a particular period and place and in a specific context, of clothing, footwear, lifestyle, accessories, makeup, hairstyle, and body posture.",
-            },
-            {
-              name: "Features",
-              content: `<ul class="list-disc list-inside leading-7">
-            <li>Material: 43% Sorona Yarn + 57% Stretch Polyester</li>
-            <li>
-             Casual pants waist with elastic elastic inside
-            </li>
-            <li>
-              The pants are a bit tight so you always feel comfortable
-            </li>
-            <li>
-              Excool technology application 4-way stretch
-            </li>
-          </ul>`,
+              name: "Descripcion",
+              content: product.description,
             },
           ]}
         />
@@ -286,26 +378,10 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
         {/* CONTENT */}
         <div className="w-full lg:w-[50%] ">
           {/* HEADING */}
-          <div className="relative">
-            <div className="aspect-w-16 aspect-h-16">
-              <img
-                src={LIST_IMAGES_DEMO[0]}
-                className="w-full rounded-xl object-cover"
-                alt="product detail 1"
-              />
-            </div>
-
-            {/* STATUS 
-            renderStatus()
-            */}
-            
-            {/* META FAVORITES */}
-            <LikeButton className="absolute right-3 top-3 " />
-          </div>
-          <div className="hidden lg:grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-5 xl:mt-5">
-            {[LIST_IMAGES_DEMO[1], LIST_IMAGES_DEMO[2]].map((item, index) => {
+          <div className="lg:grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-5 xl:mt-5">
+            {product.images.map((item, index) => {
               return (
-                <div key={index} className="aspect-w-3 aspect-h-4">
+                <div key={index} className="">
                   <img
                     src={item}
                     className="w-full rounded-xl object-cover"
@@ -321,6 +397,9 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
         <div className="w-full lg:w-[50%] pt-6 lg:pt-0 lg:pl-7 xl:pl-8">
           {renderSectionContent()}
         </div>
+
+        {product.product_variations.length > 0 &&
+          variations(product.product_variations)}
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { Transition } from "@headlessui/react";
 import ModalQuickView from "./ModalQuickView";
 import ProductStatus from "./ProductStatus";
+import supabase from "services/baseService";
 
 export interface ProductCardProps {
   className?: string;
@@ -25,6 +26,7 @@ const ProductCard = ({
   data,
 }) => {
   const {
+    id,
     name,
     price,
     description,
@@ -239,17 +241,17 @@ const ProductCard = ({
       <div
         className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
         data-nc-id="ProductCard"
+        onClick={()=> setShowModalQuickView(true)}
       >
-        <Link to={"/product-detail"} className="absolute inset-0"></Link>
+       {/* <Link to={"/product-detail"} className="absolute inset-0"></Link> */}
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
-          <Link to={"/product-detail"} className="block">
+         
             <NcImage
               containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
               src={images[0]}
               className="object-cover w-full h-full drop-shadow-xl"
             />
-          </Link>
 
           {/* <ProductStatus status={status} />
           
@@ -286,6 +288,7 @@ const ProductCard = ({
 
       {/* QUICKVIEW */}
       <ModalQuickView
+        id={id}
         show={showModalQuickView}
         onCloseModalQuickView={() => setShowModalQuickView(false)}
       />
@@ -294,10 +297,3 @@ const ProductCard = ({
 };
 
 export default ProductCard;
-{/* <div className="flex items-center mb-0.5">
-              <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
-              <span className="text-sm ml-1 text-slate-500 dark:text-slate-400">
-                {(Math.random() * 1 + 4).toFixed(1)} (
-                {Math.floor(Math.random() * 70 + 20)} reviews)
-              </span>
-            </div> */}

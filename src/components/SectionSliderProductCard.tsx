@@ -61,7 +61,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
     const fetchCatalogSections = async () => {
       try {
         const fetchedSections = await getCatalogSections();
-        console.log(fetchedSections)
+        console.log(fetchedSections);
         setSections(fetchedSections);
       } catch (error) {
         console.error("Failed to fetch catalog sections:", error);
@@ -114,8 +114,10 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
   return (
     <div className={`nc-SectionSliderProductCard ${className}`}>
       {sections.map((section, key) => (
-        <div key={key} className="space-y-4">
-          <h3>{section.name}</h3>
+        <div key={key} className="my-10 space-y-4">
+          <h3 className=" text-3xl md:text-4xl font-semibold">
+            {section.name}
+          </h3>
           <div
             className={`
           ${
@@ -125,7 +127,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
           }
         `}
           >
-            {section.catalog_section_products?.map(({product_id}, k) => (
+            {section.catalog_section_products?.map(({ product_id }, k) => (
               <div
                 key={k}
                 className={`
@@ -142,14 +144,21 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
                   alt={product_id.name}
                   className="w-full h-48 object-cover mb-4 rounded"
                 />
-                <h4 className="font-semibold text-lg mb-2">{product_id.name}</h4>
-                <Prices price={product_id.standard_price} className="text-xl font-bold"></Prices>
+                <div className="flex justify-center items-center">
+                  <h4 className="font-semibold text-lg mb-2">
+                    {product_id.name}
+                  </h4>
+                  <Prices
+                    price={product_id.standard_price}
+                    className="text-xl font-bold"
+                  ></Prices>
+                </div>
               </div>
             ))}
           </div>
         </div>
       ))}
-      <div className={`${UNIQUE_CLASS} flow-root`} ref={sliderRef}>
+      {/* <div className={`${UNIQUE_CLASS} flow-root`} ref={sliderRef}>
         <Heading
           className={headingClassName}
           fontClass={headingFontClassName}
@@ -167,7 +176,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
             ))}
           </ul>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

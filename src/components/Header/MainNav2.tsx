@@ -76,7 +76,7 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
       <div className="container">
         <div className="h-20 flex justify-between">
           <div className="flex items-center md:hidden flex-1">
-            <MenuBar />
+            {/* <MenuBar /> */}
           </div>
 
           <div className="flex lg:flex-1 items-center space-x-3 sm:space-x-8">
@@ -108,8 +108,8 @@ const MainNav2: FC<MainNav2Props> = ({ className = "" }) => {
                 {renderMagnifyingGlassIcon()}
               </button>
             )}
-            <AvatarDropdown />
-            <CartDropdown />
+            {/* <AvatarDropdown />
+            <CartDropdown /> */}
           </div>
         </div>
       </div>

@@ -72,7 +72,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
     return (
       <div className="h-20 flex justify-between">
         <div className="flex items-center lg:hidden flex-1">
-          <MenuBar />
+          {/* <MenuBar /> */}
         </div>
 
         <div className="lg:flex-1 flex items-center">
@@ -92,8 +92,11 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
               {renderMagnifyingGlassIcon()}
             </button>
           )}
-          <AvatarDropdown />
-          <CartDropdown />
+          
+          {/*
+          <AvatarDropdown /> 
+          <CartDropdown /> 
+          */}
         </div>
       </div>
     );
