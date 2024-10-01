@@ -166,9 +166,10 @@ export const getProductbyId = async (id) => {
 };
 export interface ProductQuickViewProps {
   className?: string;
+  id: string | number;
 }
 
-const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
+const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", id = '1'}) => {
   const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
   const [product, setProduct] = useState(initialValues);
@@ -177,7 +178,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
   const [qualitySelected, setQualitySelected] = React.useState(1);
 
   useEffect(() => {
-    getProductbyId(1).then((prod) => {
+    getProductbyId(id).then((prod) => {
       console.log('SOL',prod);
       const variations = prod.product_variations.map((variation: any) => ({
         id: variation.id,
