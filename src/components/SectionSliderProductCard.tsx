@@ -5,6 +5,7 @@ import ProductCard from "./ProductCard";
 import { Product, PRODUCTS } from "data/data";
 import supabase from "../services/baseService";
 import Prices from "./Prices";
+import ModalQuickView from "./ModalQuickView";
 
 export interface SectionSliderProductCardProps {
   className?: string;
@@ -56,6 +57,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
 
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
+  const [showModalQuickView, setShowModalQuickView] = React.useState(false);
 
   useEffect(() => {
     const fetchCatalogSections = async () => {
@@ -138,6 +140,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
                   : "w-64 flex-shrink-0"
               }
             `}
+                onClick={() => setShowModalQuickView(true)}
               >
                 <img
                   src={product_id.images.length > 0 && product_id.images[0]}
@@ -153,6 +156,11 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
                     className="text-xl font-bold"
                   ></Prices>
                 </div>
+                <ModalQuickView
+                  id={product_id.id}
+                  show={showModalQuickView}
+                  onCloseModalQuickView={() => setShowModalQuickView(false)}
+                />
               </div>
             ))}
           </div>
