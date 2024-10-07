@@ -1,25 +1,21 @@
-import React, { FC, useEffect, useState } from "react";
-import ButtonPrimary from "shared/Button/ButtonPrimary";
-import LikeButton from "components/LikeButton";
-import { StarIcon } from "@heroicons/react/24/solid";
-import BagIcon from "components/BagIcon";
-import NcInputNumber from "components/NcInputNumber";
-import { PRODUCTS } from "data/data";
 import {
-  NoSymbolIcon,
   ClockIcon,
+  NoSymbolIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
+import BagIcon from "components/BagIcon";
 import IconDiscount from "components/IconDiscount";
 import Prices from "components/Prices";
-import toast from "react-hot-toast";
+import AccordionInfo from "containers/ProductDetailPage/AccordionInfo";
+import { PRODUCTS } from "data/data";
 import detail1JPG from "images/products/detail1.jpg";
 import detail2JPG from "images/products/detail2.jpg";
 import detail3JPG from "images/products/detail3.jpg";
-import NotifyAddTocart from "./NotifyAddTocart";
-import AccordionInfo from "containers/ProductDetailPage/AccordionInfo";
-import { Link } from "react-router-dom";
+import React, { FC, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import supabase from "services/baseService";
+import ButtonPrimary from "shared/Button/ButtonPrimary";
+import NotifyAddTocart from "./NotifyAddTocart";
 // Types.ts
 interface AttributeValue {
   types: { name: string }

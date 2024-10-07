@@ -1,11 +1,9 @@
-import React, { FC, useEffect, useState, useId, useRef } from "react";
-import Heading from "components/Heading/Heading";
 import Glide from "@glidejs/glide";
-import ProductCard from "./ProductCard";
 import { Product, PRODUCTS } from "data/data";
+import React, { FC, useEffect, useId, useRef, useState } from "react";
 import supabase from "../services/baseService";
-import Prices from "./Prices";
 import ModalQuickView from "./ModalQuickView";
+import Prices from "./Prices";
 
 export interface SectionSliderProductCardProps {
   className?: string;

@@ -8,7 +8,7 @@ import Page404 from "containers/Page404/Page404";
 import SiteHeader from "containers/SiteHeader";
 import ProductDetailPage from "containers/ProductDetailPage/ProductDetailPage";
 import OffersDetailPage from "containers/ProductDetailPage/OffersPage";
-//import CheckoutPage from "containers/PageCheckout/CheckoutPage";
+import CheckoutPage from "containers/PageCheckout/CheckoutPage";
 import PageCollection2 from "containers/PageCollection2";
 import { Toaster } from "react-hot-toast";
 
