@@ -12,7 +12,11 @@ const productsService = {
   // Get one product by ID
   async getOneProduct(id: number) {
     try {
-      const response = await baseService.from("products").select("*").eq("id", id).single();
+      const response = await baseService
+        .from("products")
+        .select("*")
+        .eq("id", id)
+        .single();
       return response.data;
     } catch (error) {
       console.error(error);
@@ -23,14 +27,19 @@ const productsService = {
   // Get all products with optional filters
   async getAllProducts(filters?: ProductFilters) {
     try {
-      let query = baseService.from("products").select("*");
+      let query = baseService
+        .from("products")
+        .select("*")
+        .gt("status", 0);
 
       if (filters) {
         if (filters.category) {
           query = query.eq("category", filters.category);
         }
         if (filters.priceRange) {
-          query = query.gte("price", filters.priceRange.min).lte("price", filters.priceRange.max);
+          query = query
+            .gte("price", filters.priceRange.min)
+            .lte("price", filters.priceRange.max);
         }
         // Add more filter conditions as needed
       }
@@ -58,8 +67,8 @@ const productsService = {
   async getAttributesAndValues() {
     try {
       const response = await baseService
-      .from("attributes")
-      .select("id, name, value:attribute_values(value)");
+        .from("attributes")
+        .select("id, name, value:attribute_values(value)");
       return response.data;
     } catch (error) {
       console.error(error);

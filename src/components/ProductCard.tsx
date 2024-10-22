@@ -1,19 +1,13 @@
-import React, { FC, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import NcImage from "shared/NcImage/NcImage";
-import LikeButton from "./LikeButton";
-import Prices from "./Prices";
-import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
-import { Product, PRODUCTS } from "data/data";
-import { StarIcon } from "@heroicons/react/24/solid";
-import ButtonPrimary from "shared/Button/ButtonPrimary";
-import ButtonSecondary from "shared/Button/ButtonSecondary";
-import BagIcon from "./BagIcon";
-import toast from "react-hot-toast";
 import { Transition } from "@headlessui/react";
+import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
+import { Product } from "data/data";
+import React, { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
+import ButtonSecondary from "shared/Button/ButtonSecondary";
+import NcImage from "shared/NcImage/NcImage";
 import ModalQuickView from "./ModalQuickView";
-import ProductStatus from "./ProductStatus";
-import supabase from "services/baseService";
+import Prices from "./Prices";
 
 export interface ProductCardProps {
   className?: string;
