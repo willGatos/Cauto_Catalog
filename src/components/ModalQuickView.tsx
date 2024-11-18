@@ -15,8 +15,6 @@ const ModalQuickView: FC<ModalQuickViewProps> = ({
   show,
   onCloseModalQuickView,
 }) => {
-  const location = useLocation();
-
   return (
     <Transition appear show={show} as={Fragment}>
       <Dialog

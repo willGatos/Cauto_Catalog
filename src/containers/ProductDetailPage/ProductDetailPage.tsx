@@ -1,6 +1,4 @@
-import {
-  SparklesIcon
-} from "@heroicons/react/24/outline";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "components/BagIcon";
 import NcInputNumber from "components/NcInputNumber";
@@ -20,10 +18,14 @@ import AccordionInfo from "./AccordionInfo";
 import Policy from "./Policy";
 
 export interface ProductDetailPageProps {
+  shopId;
   className?: string;
 }
 
-const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
+const ProductDetailPage: FC<ProductDetailPageProps> = ({
+  shopId,
+  className = "",
+}) => {
   const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
   // TODO: Extraer la información del producto
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
@@ -366,6 +368,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = ({ className = "" }) => {
 
           {/* OTHER SECTION */}
           <SectionSliderProductCard
+            shopId={shopId}
             heading="Customers also purchased"
             subHeading=""
             headingFontClassName="text-2xl font-semibold"

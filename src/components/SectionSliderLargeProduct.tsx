@@ -1,31 +1,20 @@
-import React, { FC, useEffect, useId, useState } from "react";
-import Heading from "components/Heading/Heading";
 import Glide from "@glidejs/glide";
-import CollectionCard from "./CollectionCard";
-import CollectionCard2 from "./CollectionCard2";
+import Heading from "components/Heading/Heading";
+import React, { FC, useEffect, useId, useState } from "react";
 import { Link } from "react-router-dom";
-import { DEMO_LARGE_PRODUCTS } from "./SectionSliderLargeProduct2";
 import { offersService } from "services/offersService";
-import supabase from "services/baseService";
+import CollectionCard2 from "./CollectionCard2";
 import ModalQuickView from "./OffersComponents/ModalQuickView";
+import { DEMO_LARGE_PRODUCTS } from "./SectionSliderLargeProduct2";
 export interface SectionSliderLargeProductProps {
   className?: string;
   itemClassName?: string;
   cardStyle?: "style1" | "style2";
+  shopId;
 }
-export const fetchOffers = async () => {
+export const fetchOffers = async (shopId) => {
   try {
-    const offers = await offersService.getAllOffers();
-    // For each offer, fetch its products and variations
-    for (const offer of offers) {
-      offer.products = await offersService.getOfferProductsByOfferId(offer.id);
-      for (const product of offer.products) {
-        product.variations =
-          await offersService.getOfferProductVariationsByOfferProductId(
-            product.id
-          );
-      }
-    }
+    const offers = await offersService.getAllOffers(shopId);
     return offers;
   } catch (error) {
     console.error("Error fetching offers:", error);
@@ -40,11 +29,12 @@ export interface OfferWithImages
 const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
   className = "",
   cardStyle = "style2",
+  shopId,
 }) => {
-  const [offers, setOffers] = useState<OfferWithImages[]>([]);
+  const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
-
+  const [offersSelected, setOffersSelected] = useState("");
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
 
@@ -77,7 +67,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     };
 
     let slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
-    fetchOffers()
+    fetchOffers(shopId)
       .then(setOffers)
       .then(() => slider.mount());
 
@@ -97,7 +87,12 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
             <ul className="glide__slides">
               {offers.map((offer, index) => (
                 <li className={`glide__slide`} key={index}>
-                  <div onClick={() => setShowModalQuickView(true)}>
+                  <div
+                    onClick={() => {
+                      setOffersSelected(offer.id.toString());
+                      setShowModalQuickView(true);
+                    }}
+                  >
                     <CollectionCard2
                       name={offer.name}
                       price={offer.price}
@@ -106,11 +101,6 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
                       id={offer.id}
                     />
                   </div>
-                  <ModalQuickView
-                    id={offer.id}
-                    show={showModalQuickView}
-                    onCloseModalQuickView={() => setShowModalQuickView(false)}
-                  />
                 </li>
               ))}
 
@@ -156,6 +146,11 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
           </div>
         </div>
       </div>
+      <ModalQuickView
+        id={offersSelected}
+        show={showModalQuickView}
+        onCloseModalQuickView={() => setShowModalQuickView(false)}
+      />
     </>
   );
 };

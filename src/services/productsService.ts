@@ -25,12 +25,13 @@ const productsService = {
   },
 
   // Get all products with optional filters
-  async getAllProducts(filters?: ProductFilters) {
+  async getAllProducts(shopId: string | number, filters?: ProductFilters) {
     try {
       let query = baseService
         .from("products")
         .select("*")
-        .gt("status", 0);
+        .gt("status", 0)
+        .eq("shop_id", shopId);
 
       if (filters) {
         if (filters.category) {

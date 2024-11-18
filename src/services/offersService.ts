@@ -3,19 +3,37 @@ import supabase from "./baseService";
 // Offers Service (Combined)
 const offersService = {
   // Get all offers with products and variations
-  async getAllOffers() {
-    const { data: offers, error } = await supabase.from("offers").select(`
-        *,
-        offer_products (
-          *,
-          products:product_id (*),
-          offer_product_variations (
-            *,
-            product_variations:product_variation_id (*)
+  async getAllOffers(shopId) {
+    const { data: offers, error } = await supabase
+      .from("offers")
+      .select(
+        `
+      id,
+      name,
+      description,
+      start_date,
+      end_date,
+      products (
+          id,
+          name
+        ),
+        variations:offer_product_variations (
+          id,
+          variation:product_variations (
+            id,
+            name
+          ),
+          offer_price,
+          currency:currency (
+            name,
+            exchange_rate
           )
         )
-      `);
-
+      )
+    `
+      )
+      .order("start_date", { ascending: false })
+      .eq("shop_id", shopId);
     if (error) {
       throw error;
     }
@@ -35,7 +53,7 @@ const offersService = {
           products:product_id (*),
           offer_product_variations (
             *,
-            product_variations:product_variation_id (*)
+            variations:product_variation_id (*)
           )
         )
       `
@@ -48,63 +66,6 @@ const offersService = {
     }
 
     return offer;
-  },
-
-  // Create a new offer
-  async createOffer(offer: {
-    name: string;
-    description?: string;
-    startDate: Date;
-    endDate: Date;
-    shopId?: number;
-    image?: string[];
-    generalOfferPrice?: number;
-  }) {
-    const { data: newOffer, error } = await supabase
-      .from("offers")
-      .insert([offer])
-      .single();
-
-    if (error) {
-      throw error;
-    }
-
-    return newOffer;
-  },
-
-  // Update an existing offer
-  async updateOffer(
-    id: number,
-    offer: {
-      name?: string;
-      description?: string;
-      startDate?: Date;
-      endDate?: Date;
-      shopId?: number;
-      image?: string[];
-      generalOfferPrice?: number;
-    }
-  ) {
-    const { data: updatedOffer, error } = await supabase
-      .from("offers")
-      .update(offer)
-      .eq("id", id)
-      .single();
-
-    if (error) {
-      throw error;
-    }
-
-    return updatedOffer;
-  },
-
-  // Delete an offer
-  async deleteOffer(id: number) {
-    const { error } = await supabase.from("offers").delete().eq("id", id);
-
-    if (error) {
-      throw error;
-    }
   },
 
   // Add a product to an offer
@@ -173,7 +134,7 @@ const offersService = {
     }
 
     return offerProducts;
-  },// Get offer products by offer ID
+  }, // Get offer products by offer ID
   async getOffersByOfferId(offerId: number) {
     const { data: offerProducts, error } = await supabase
       .from("offers")

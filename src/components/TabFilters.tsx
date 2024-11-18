@@ -1,16 +1,14 @@
-import React, { Fragment, useEffect, useState } from "react";
 import { Dialog, Popover, Transition } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import Slider from "rc-slider";
+import { Fragment, useEffect, useState } from "react";
+import supabase from "services/baseService";
+import { productsService } from "services/productsService";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import ButtonThird from "shared/Button/ButtonThird";
 import ButtonClose from "shared/ButtonClose/ButtonClose";
 import Checkbox from "shared/Checkbox/Checkbox";
-import Slider from "rc-slider";
 import Radio from "shared/Radio/Radio";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import MySwitch from "components/MySwitch";
-import baseService from "services/baseService";
-import supabase from "services/baseService";
-import { productsService } from "services/productsService";
 
 // DEMO DATA
 const DATA_categories = [
@@ -67,7 +65,32 @@ const DATA_sortOrderRadios = [
 
 const PRICE_RANGE = [1, 500];
 //
-const TabFilters = () => {
+
+async function getProductsWithFilters(category, attributes, shopId) {
+  try {
+    // Preparar los parámetros de la consulta
+    const params = {
+      p_attribute_value: attributes,
+      p_category_ids: category,
+      p_shop_id: shopId,
+    };
+
+    // Realizar la consulta SQL personalizada
+    const { data, error } = await supabase.rpc(
+      "get_filtered_products_with_hierarchy",
+      params
+    );
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    console.error("Error al obtener productos:", error.message);
+    return null;
+  }
+}
+
+const TabFilters = ({ shopId }) => {
   const [isOpenMoreFilter, setisOpenMoreFilter] = useState(false);
   //
   const [isOnSale, setIsIsOnSale] = useState(false);
@@ -79,13 +102,15 @@ const TabFilters = () => {
   const [categoriesSelected, setCategoriesSelected] = useState([]);
   const [attributesSelected, setAttributesSelected] = useState([]);
   //
+
   const closeModalMoreFilter = () => {
-    getProductsWithFilters(categoriesSelected, attributesSelected).then(
+    getProductsWithFilters(categoriesSelected, attributesSelected, shopId).then(
       console.log
     );
-    setAttributesSelected([])
-    setCategoriesSelected([])
-    setisOpenMoreFilter(false);}
+    setAttributesSelected([]);
+    setCategoriesSelected([]);
+    setisOpenMoreFilter(false);
+  };
   const openModalMoreFilter = () => setisOpenMoreFilter(true);
 
   const [attributes, setAttributes] = useState([]);
@@ -989,113 +1014,6 @@ const TabFilters = () => {
                           </div>
                         </div>
                       ))}
-
-                      {/* --------- */}
-                      {/* ---- 
-                      <div className="py-7">
-                        <h3 className="text-xl font-medium">Range Prices</h3>
-                        <div className="mt-6 relative ">
-                          <div className="relative flex flex-col space-y-8">
-                            <div className="space-y-5">
-                              <Slider
-                                range
-                                className="text-red-400"
-                                min={PRICE_RANGE[0]}
-                                max={PRICE_RANGE[1]}
-                                defaultValue={rangePrices}
-                                allowCross={false}
-                                onChange={(_input: number | number[]) =>
-                                  setRangePrices(_input as number[])
-                                }
-                              />
-                            </div>
-
-                            <div className="flex justify-between space-x-5">
-                              <div>
-                                <label
-                                  htmlFor="minPrice"
-                                  className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-                                >
-                                  Min price
-                                </label>
-                                <div className="mt-1 relative rounded-md">
-                                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span className="text-neutral-500 sm:text-sm">
-                                      $
-                                    </span>
-                                  </div>
-                                  <input
-                                    type="text"
-                                    name="minPrice"
-                                    disabled
-                                    id="minPrice"
-                                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-3 sm:text-sm border-neutral-200 rounded-full text-neutral-900"
-                                    value={rangePrices[0]}
-                                  />
-                                </div>
-                              </div>
-                              <div>
-                                <label
-                                  htmlFor="maxPrice"
-                                  className="block text-sm font-medium text-neutral-700 dark:text-neutral-300"
-                                >
-                                  Max price
-                                </label>
-                                <div className="mt-1 relative rounded-md">
-                                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <span className="text-neutral-500 sm:text-sm">
-                                      $
-                                    </span>
-                                  </div>
-                                  <input
-                                    type="text"
-                                    disabled
-                                    name="maxPrice"
-                                    id="maxPrice"
-                                    className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-3 sm:text-sm border-neutral-200 rounded-full text-neutral-900"
-                                    value={rangePrices[1]}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                        */}
-                      {/* --------- */}
-                      {/* ---- 
-                      <div className="py-7">
-                        <h3 className="text-xl font-medium">Sort Order</h3>
-                        <div className="mt-6 relative ">
-                          <div className="relative flex flex-col space-y-5">
-                            {DATA_sortOrderRadios.map((item) => (
-                              <Radio
-                                id={item.id}
-                                key={item.id}
-                                name="radioNameSort"
-                                label={item.name}
-                                defaultChecked={sortOrderStates === item.id}
-                                onChange={setSortOrderStates}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                        */}
-                      {/* --------- */}
-                      {/* ---- 
-                      <div className="py-7">
-                        <h3 className="text-xl font-medium">On sale!</h3>
-                        <div className="mt-6 relative ">
-                          <MySwitch
-                            label="On sale!"
-                            desc="Products currently on sale"
-                            enabled={isOnSale}
-                            onChange={setIsIsOnSale}
-                          />
-                        </div>
-                      </div>
-                      */}
                     </div>
                   </div>
 
@@ -1127,28 +1045,7 @@ const TabFilters = () => {
       </div>
     );
   };
-  async function getProductsWithFilters(category, attributes) {
-    try {
-      // Preparar los parámetros de la consulta
-      const params = {
-        p_attribute_value: attributes,
-        p_category_ids: category,
-      };
 
-      // Realizar la consulta SQL personalizada
-      const { data, error } = await supabase.rpc(
-        "get_filtered_products_with_hierarchy",
-        params
-      );
-
-      if (error) throw error;
-
-      return data;
-    } catch (error) {
-      console.error("Error al obtener productos:", error.message);
-      return null;
-    }
-  }
   useEffect(() => {
     productsService
       .getCategories()
@@ -1161,7 +1058,6 @@ const TabFilters = () => {
         setAttributes(data);
       })
       .catch((e) => console.log(e));
-
   }, []);
 
   return (

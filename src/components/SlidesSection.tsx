@@ -12,6 +12,7 @@ export interface SectionSliderLargeProductProps {
   className?: string;
   itemClassName?: string;
   cardStyle?: "style1" | "style2";
+  shopId;
 }
 
 export const getSlides = async (shopId) => {
@@ -30,19 +31,10 @@ export const getSlides = async (shopId) => {
   }
 };
 
-export const fetchOffers = async () => {
+export const fetchOffers = async (shopId) => {
   try {
-    const offers = await offersService.getAllOffers();
-    // For each offer, fetch its products and variations
-    for (const offer of offers) {
-      offer.products = await offersService.getOfferProductsByOfferId(offer.id);
-      for (const product of offer.products) {
-        product.variations =
-          await offersService.getOfferProductVariationsByOfferProductId(
-            product.id
-          );
-      }
-    }
+    const offers = await offersService.getAllOffers(shopId);
+
     return offers;
   } catch (error) {
     console.error("Error fetching offers:", error);
@@ -57,11 +49,9 @@ export interface OfferWithImages
 const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
   className = "",
   cardStyle = "style2",
+  shopId,
 }) => {
   const [offers, setOffers] = useState<OfferWithImages[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showModalQuickView, setShowModalQuickView] = React.useState(false);
-
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
   const [sliders, setSliders] = useState([
@@ -100,12 +90,11 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
       },
     };
     try {
-      console.log("HOLA");
-
       let slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
-      getSlides(6)
+
+      getSlides(shopId)
         .then((res) => {
-          console.log(res);
+          console.log("RESPONSE", res);
           setSliders(res);
         })
         .then(() => slider.mount())
@@ -125,11 +114,11 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
           sliders.map((slide) => (
             <div className={`${UNIQUE_CLASS} flow-root`}>
               <Heading isCenter={false} hasNextPrev>
-                Nuestras Mejores Ofertas
+                {slide.name}
               </Heading>
               <div className="glide__track" data-glide-el="track">
                 <ul className="glide__slides">
-                  <div className="w-screen h-96">
+                  <div style={{width: "400px"}} className="w-screen h-96 flex flex-row">
                     {slide.images.map((img) => (
                       <img src={img} alt={slide.name} />
                     ))}

@@ -35,48 +35,6 @@ interface Variation {
   attribute_values: AttributeValue[];
 }
 
-const variationsData: Variation[] = [
-  {
-    id: 1,
-    name: "Camiseta Roja - Talla M",
-    price: 19.99,
-    stock: 50,
-    pictures: [
-      "/placeholder.svg?height=150&width=150",
-      "/placeholder.svg?height=150&width=150",
-    ],
-    attribute_values: [
-      { types: { name: "Color" }, value: "Rojo" },
-      { types: { name: "Talla" }, value: "M" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Camiseta Azul - Talla L",
-    price: 21.99,
-    stock: 30,
-    pictures: [
-      "/placeholder.svg?height=150&width=150",
-      "/placeholder.svg?height=150&width=150",
-      "/placeholder.svg?height=150&width=150",
-    ],
-    attribute_values: [
-      { types: { name: "Color" }, value: "Azul" },
-      { types: { name: "Talla" }, value: "L" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Camiseta Verde - Talla S",
-    price: 18.99,
-    stock: 40,
-    pictures: ["/placeholder.svg?height=150&width=150"],
-    attribute_values: [
-      { types: { name: "Color" }, value: "Verde" },
-      { types: { name: "Talla" }, value: "S" },
-    ],
-  },
-];
 interface AttributeValue {
   types: {
     name: string;
@@ -279,10 +237,11 @@ const getOfferWithProducts = async (offerId) => {
   return data;
 };
 export interface ProductQuickViewProps {
+  id: string
   className?: string;
 }
 
-const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
+const ProductQuickView: FC<ProductQuickViewProps> = ({ id, className = "" }) => {
   const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
   const [product, setProduct] = useState(initialValues);
@@ -291,7 +250,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
   const [qualitySelected, setQualitySelected] = React.useState(1);
 
   useEffect(() => {
-    getOfferWithProducts(2).then((offer) => {
+    getOfferWithProducts(id).then((offer) => {
       const processVariations = (product: Product) => {
         const processedVariations = product.product_variations.map(
           (variation) => {
@@ -329,36 +288,35 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
 
         return processedVariations;
       };
-      const updatedOfferProducts = offer.offer_products.map(op => ({
+      const updatedOfferProducts = offer.offer_products.map((op) => ({
         ...op,
         product_id: {
           ...op.product_id,
           product_variations: processVariations(op.product_id),
         },
       }));
-    
+
       const updatedOffer = {
         ...offer,
         offer_products: updatedOfferProducts,
       };
-      console.log(updatedOffer)
       setProduct(updatedOffer);
     });
   }, []);
-  const notifyAddTocart = () => {
-    toast.custom(
-      (t) => (
-        <NotifyAddTocart
-          productImage={LIST_IMAGES_DEMO[0]}
-          qualitySelected={qualitySelected}
-          show={t.visible}
-          sizeSelected={sizeSelected}
-          variantActive={variantActive}
-        />
-      ),
-      { position: "top-right", id: "nc-product-notify", duration: 3000 }
-    );
-  };
+  // const notifyAddTocart = () => {
+  //   toast.custom(
+  //     (t) => (
+  //       <NotifyAddTocart
+  //         productImage={LIST_IMAGES_DEMO[0]}
+  //         qualitySelected={qualitySelected}
+  //         show={t.visible}
+  //         sizeSelected={sizeSelected}
+  //         variantActive={variantActive}
+  //       />
+  //     ),
+  //     { position: "top-right", id: "nc-product-notify", duration: 3000 }
+  //   );
+  // };
 
   const variations = (variationsData) => {
     if (!variationsData || variationsData.length === 0) {
@@ -366,7 +324,9 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
     }
     return (
       <div className="container mx-auto p-4">
-        <h3 className="text-2xl font-bold mb-6">Variaciones de {variationsData.name}</h3>
+        <h3 className="text-2xl font-bold mb-6">
+          Variaciones de {variationsData.name}
+        </h3>
         <div className="space-y-8">
           {variationsData.product_variations.map((variation) => {
             const attribute_values = variation.attribute_values
@@ -498,7 +458,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
         <div className="flex space-x-3.5">
           <ButtonPrimary
             className="flex-1 flex-shrink-0"
-            onClick={notifyAddTocart}
+            //onClick={notifyAddTocart}
           >
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
             <span className="ml-3">Descargar Imagen</span>
@@ -549,10 +509,11 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "" }) => {
           {renderSectionContent()}
         </div>
 
-     {product.offer_products.map(op =>(
-        op.product_id.product_variations.length > 0 &&
-        variations( op.product_id)
-     ))}
+        {product.offer_products.map(
+          (op) =>
+            op.product_id.product_variations.length > 0 &&
+            variations(op.product_id)
+        )}
       </div>
     </div>
   );

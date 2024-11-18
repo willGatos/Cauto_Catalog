@@ -7,10 +7,14 @@ import { PRODUCTS } from "data/data";
 import SidebarFilters from "./SidebarFilters";
 
 export interface PageCollection2Props {
+  shopId;
   className?: string;
 }
 
-const PageCollection2: FC<PageCollection2Props> = ({ className = "" }) => {
+const PageCollection2: FC<PageCollection2Props> = ({
+  shopId,
+  className = "",
+}) => {
   return (
     <div
       className={`nc-PageCollection2 ${className}`}
@@ -55,7 +59,7 @@ const PageCollection2: FC<PageCollection2Props> = ({ className = "" }) => {
         {/* === SECTION 5 === */}
         <hr className="border-slate-200 dark:border-slate-700" />
 
-        <SectionSliderCollections />
+        <SectionSliderCollections shopId={shopId} />
         <hr className="border-slate-200 dark:border-slate-700" />
 
         {/* SUBCRIBES */}

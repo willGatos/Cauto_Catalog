@@ -1,12 +1,11 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { FC, Fragment, useEffect } from "react";
+import { FC, Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import ButtonClose from "shared/ButtonClose/ButtonClose";
 import ProductQuickView from "./OfferQuickView";
-import supabase from "services/baseService";
 
 export interface ModalQuickViewProps {
-  id: string | number;
+  id: string;
   show: boolean;
   onCloseModalQuickView: () => void;
 }
@@ -61,7 +60,7 @@ const ModalQuickView: FC<ModalQuickViewProps> = ({
                 </span>
 
                 <div className="flex-1 overflow-y-auto rounded-xl hiddenScrollbar">
-                    <ProductQuickView />
+                    <ProductQuickView id={id} />
                 </div>
               </div>
             </div>

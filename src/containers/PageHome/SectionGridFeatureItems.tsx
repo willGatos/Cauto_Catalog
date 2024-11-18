@@ -6,19 +6,21 @@ import { Product } from "data/data";
 import { productsService } from "services/productsService";
 //
 export interface SectionGridFeatureItemsProps {
+  shopId;
   product?: Product[];
 }
 
 const SectionGridFeatureItems: FC<SectionGridFeatureItemsProps> = ({
+  shopId,
   product,
 }) => {
   const [products, setProduct] = useState([]);
   useEffect(() => {
-    productsService.getAllProducts().then(setProduct);
+    productsService.getAllProducts(shopId).then(setProduct);
   }, []);
   return (
     <div className="nc-SectionGridFeatureItems relative">
-      <HeaderFilterSection />
+      <HeaderFilterSection shopId={shopId} />
       <div
         className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-2`}
       >

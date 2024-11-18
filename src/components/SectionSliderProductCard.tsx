@@ -12,11 +12,15 @@ export interface SectionSliderProductCardProps {
   headingFontClassName?: string;
   headingClassName?: string;
   subHeading?: string;
+  shopId;
   data?: Product[];
 }
 async function getCatalogSections(shopId?: number) {
   try {
-    const { data, error } = await supabase.from("catalog_sections").select(`
+    const { data, error } = await supabase
+      .from("catalog_sections")
+      .select(
+        `
         id,
         name,
         type_of_view,
@@ -29,8 +33,9 @@ async function getCatalogSections(shopId?: number) {
             )
           )
         )
-      `);
-    //.eq('shop_id', shopId);
+      `
+      )
+      .eq("shop_id", shopId);
 
     if (error) throw error;
 
@@ -47,12 +52,13 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
   headingClassName,
   heading,
   subHeading = "REY backpacks & bags",
+  shopId,
   data = PRODUCTS.filter((_, i) => i < 8 && i > 2),
 }) => {
   const sliderRef = useRef(null);
   const [sections, setSections] = useState([]);
   const [lLoading, setLoading] = useState(false);
-
+  const [productIdForModal, setProductIdForModal] = useState("1");
   const id = useId();
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
@@ -60,7 +66,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
   useEffect(() => {
     const fetchCatalogSections = async () => {
       try {
-        const fetchedSections = await getCatalogSections();
+        const fetchedSections = await getCatalogSections(shopId);
         console.log(fetchedSections);
         setSections(fetchedSections);
       } catch (error) {
@@ -128,9 +134,11 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
         `}
           >
             {section.catalog_section_products?.map(({ product_id }, k) => (
-              <div
-                key={k}
-                className={`
+              <>
+                {" "}
+                <div
+                  key={k}
+                  className={`
               border p-6 rounded-lg shadow-md
               ${
                 section.type_of_view === "Grid"
@@ -138,28 +146,27 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
                   : "w-64 flex-shrink-0"
               }
             `}
-                onClick={() => setShowModalQuickView(true)}
-              >
-                <img
-                  src={product_id.images.length > 0 && product_id.images[0]}
-                  alt={product_id.name}
-                  className="w-full h-48 object-cover mb-4 rounded"
-                />
-                <div className="flex justify-center items-center">
-                  <h4 className="font-semibold text-lg mb-2">
-                    {product_id.name}
-                  </h4>
-                  <Prices
-                    price={product_id.standard_price}
-                    className="text-xl font-bold"
-                  ></Prices>
+                  onClick={() => {
+                    setShowModalQuickView(true);
+                    setProductIdForModal(product_id.id);
+                  }}
+                >
+                  <img
+                    src={product_id.images.length > 0 && product_id.images[0]}
+                    alt={product_id.name}
+                    className="w-full h-48 object-cover mb-4 rounded"
+                  />
+                  <div className="flex justify-center items-center">
+                    <h4 className="font-semibold text-lg mb-2">
+                      {product_id.name}
+                    </h4>
+                    <Prices
+                      price={product_id.standard_price}
+                      className="text-xl font-bold"
+                    ></Prices>
+                  </div>
                 </div>
-                <ModalQuickView
-                  id={product_id.id}
-                  show={showModalQuickView}
-                  onCloseModalQuickView={() => setShowModalQuickView(false)}
-                />
-              </div>
+              </>
             ))}
           </div>
         </div>
@@ -183,6 +190,11 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
           </ul>
         </div>
       </div> */}
+      <ModalQuickView
+        id={productIdForModal}
+        show={showModalQuickView}
+        onCloseModalQuickView={() => setShowModalQuickView(false)}
+      />
     </div>
   );
 };

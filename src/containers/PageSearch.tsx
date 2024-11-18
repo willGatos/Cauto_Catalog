@@ -11,10 +11,11 @@ import ProductCard from "components/ProductCard";
 import { PRODUCTS } from "data/data";
 
 export interface PageSearchProps {
+  shopId;
   className?: string;
 }
 
-const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
+const PageSearch: FC<PageSearchProps> = ({ shopId, className = "" }) => {
   return (
     <div className={`nc-PageSearch  ${className}`} data-nc-id="PageSearch">
       <Helmet>
@@ -82,7 +83,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
       <div className="container py-16 lg:pb-28 lg:pt-20 space-y-16 lg:space-y-28">
         <main>
           {/* FILTER */}
-          <HeaderFilterSearchPage />
+          <HeaderFilterSearchPage shopId={shopId} />
 
           {/* LOOP ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
@@ -100,7 +101,7 @@ const PageSearch: FC<PageSearchProps> = ({ className = "" }) => {
 
         {/* === SECTION 5 === */}
         <hr className="border-slate-200 dark:border-slate-700" />
-        <SectionSliderCollections />
+        <SectionSliderCollections shopId={shopId} />
         <hr className="border-slate-200 dark:border-slate-700" />
 
         {/* SUBCRIBES */}

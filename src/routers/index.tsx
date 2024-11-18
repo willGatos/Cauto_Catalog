@@ -12,13 +12,11 @@ import CheckoutPage from "containers/PageCheckout/CheckoutPage";
 import PageCollection2 from "containers/PageCollection2";
 import { Toaster } from "react-hot-toast";
 
-
-
 export const pages: Page[] = [
-  { path: "/", component: PageHome2 },
-  { path: "/product-detail", component: ProductDetailPage },
-  { path: "/offer-detail/:id", component: OffersDetailPage },
-  { path: "/page-collection", component: PageCollection2 },
+  { path: "/:identifier", component: PageHome2 },
+  //{ path: "/product-detail", component: ProductDetailPage },
+  { path: "/:identifier/offer-detail/:id", component: OffersDetailPage },
+  //{ path: "/page-collection", component: PageCollection2 },
   //{ path: "/checkout", component: CheckoutPage },
 ];
 
@@ -28,8 +26,9 @@ const MyRoutes = () => {
       <Toaster />
       <ScrollToTop />
       <SiteHeader />
-      <Routes >
+      <Routes>
         {pages.map(({ component: Component, path }, index) => {
+
           return <Route key={index} element={<Component />} path={path} />;
         })}
         <Route element={<Page404 />} />
@@ -49,8 +48,7 @@ import AccountOrder from "containers/AccountPage/AccountOrder";
 import CartPage from "containers/ProductDetailPage/CartPage";
  */
 
-
-  /* { path: "/page-search", component: PageSearch }, 
+/* { path: "/page-search", component: PageSearch }, 
      { path: "/account-change-password", component: AccountPass }, 
      { path: "/account-billing", component: AccountBilling },
      { path: "/cart", component: CartPage },

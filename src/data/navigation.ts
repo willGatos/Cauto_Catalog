@@ -4,19 +4,19 @@ import ncNanoId from "utils/ncNanoId";
 export const MEGAMENU_TEMPLATES: NavItemType[] = [
   {
     id: ncNanoId(),
-    href: "/",
+    href: "/:identifier",
     name: "Home Page",
     children: [
-      { id: ncNanoId(), href: "/", name: "Home  1" },
+      { id: ncNanoId(), href: "/:identifier", name: "Home  1" },
       { id: ncNanoId(), href: "/home2", name: "Home  2", isNew: true },
-      { id: ncNanoId(), href: "/", name: "Header  1" },
+      { id: ncNanoId(), href: "/:identifier", name: "Header  1" },
       { id: ncNanoId(), href: "/home2", name: "Header  2", isNew: true },
-      { id: ncNanoId(), href: "/", name: "Coming Soon" },
+      { id: ncNanoId(), href: "/:identifier", name: "Coming Soon" },
     ],
   },
   {
     id: ncNanoId(),
-    href: "/",
+    href: "/:identifier",
     name: "Shop Pages",
     children: [
       { id: ncNanoId(), href: "/page-collection", name: "Category Page 1" },
@@ -28,7 +28,7 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/",
+    href: "/:identifier",
     name: "Other Pages",
     children: [
       { id: ncNanoId(), href: "/checkout", name: "Checkout Page" },
@@ -41,7 +41,7 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
   },
   {
     id: ncNanoId(),
-    href: "/",
+    href: "/:identifier",
     name: "Blog Page",
     children: [
       { id: ncNanoId(), href: "/blog", name: "Blog Page" },
@@ -57,7 +57,7 @@ export const MEGAMENU_TEMPLATES: NavItemType[] = [
 export const NAVIGATION_DEMO_2: NavItemType[] = [
   {
     id: ncNanoId(),
-    href: "/",
+    href: "/:identifier",
     name: "Home Demo 1",
   },
   {
@@ -83,9 +83,8 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
       },
     ],
   },
-  
-  
- /*const OTHER_PAGE_CHILD: NavItemType[] = [
+
+  /*const OTHER_PAGE_CHILD: NavItemType[] = [
   
 
    {
@@ -111,7 +110,7 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
       },
     ],
   }, */
-  
+
   /* {
     id: ncNanoId(),
     href: "/page-search",
@@ -173,7 +172,6 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   }, 
 ];*/
 
-
   /* {
     id: ncNanoId(),
     href: "/page-search",
@@ -212,5 +210,4 @@ export const NAVIGATION_DEMO_2: NavItemType[] = [
   },
   
   */
- 
 ];

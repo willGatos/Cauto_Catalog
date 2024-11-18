@@ -4,10 +4,11 @@ import backgroundLineSvg from "images/Moon.svg";
 import imageRightPng2 from "images/hero-2-right-1.png";
 
 export interface SectionHero3Props {
+  shops;
   className?: string;
 }
 
-const SectionHero3: FC<SectionHero3Props> = ({ className = "" }) => {
+const SectionHero3: FC<SectionHero3Props> = ({ shops, className = "" }) => {
   return (
     <div
       className={`nc-SectionHero3 relative ${className}`}
@@ -16,19 +17,19 @@ const SectionHero3: FC<SectionHero3Props> = ({ className = "" }) => {
       <div className="relative pt-8 lg:pt-0 lg:absolute z-10 inset-x-0 top-[10%] sm:top-[20%]  container">
         <div className="flex flex-col items-start max-w-lg xl:max-w-2xl space-y-5 xl:space-y-8 ">
           <span className="sm:text-lg md:text-xl font-semibold text-neutral-900">
-            In this season, find the best 🔥
+            {shops.mainDescription}
           </span>
           <h2 className="font-bold text-black text-3xl sm:text-4xl md:text-5xl xl:text-6xl 2xl:text-7xl !leading-[115%] ">
-            Sports equipment collection.
+            {shops.secondaryDescription}
           </h2>
-          <div className="sm:pt-4">
+          {/* <div className="sm:pt-4">
             <ButtonPrimary
               sizeClass="px-6 py-3 lg:px-8 lg:py-4"
               fontSize="text-sm sm:text-base lg:text-lg font-medium"
             >
               Start your search
             </ButtonPrimary>
-          </div>
+          </div> */}
         </div>
       </div>
 

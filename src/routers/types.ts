@@ -1,12 +1,12 @@
 import { ComponentType } from "react";
 
 export interface LocationStates {
-  "/"?: {};
+  "/:identifier"?: {};
   "/home2"?: {};
   "/home3"?: {};
   "/product-detail"?: {};
   "/product-detail-2"?: {};
-  "/offer-detail/:id"?: {};
+  "/:identifier/offer-detail/:id"?: {};
   "/page-collection"?: {};
   "/page-collection-2"?: {};
   "/page-search"?: {};
