@@ -73,7 +73,9 @@ function PageHome2() {
       <div className="container px-4">
         {/* SECTION HERO */}
         <SectionHero3 shops={shop} />
+
         <SlidesSection shopId={shop.id} />
+
         <SectionSliderLargeProduct shopId={shop.id} />
         <div className="relative py-24">
           <SectionSliderProductCard
@@ -84,7 +86,7 @@ function PageHome2() {
         </div>
       </div>
 
-      <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
+      <div id="Grid" className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
         <SectionGridFeatureItems shopId={shop.id} />
       </div>
     </div>

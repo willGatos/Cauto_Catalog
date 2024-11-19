@@ -1,13 +1,9 @@
-import React, { FC, useEffect, useId, useState } from "react";
-import Heading from "components/Heading/Heading";
 import Glide from "@glidejs/glide";
-import CollectionCard from "./CollectionCard";
-import CollectionCard2 from "./CollectionCard2";
-import { Link } from "react-router-dom";
-import { DEMO_LARGE_PRODUCTS } from "./SectionSliderLargeProduct2";
-import { offersService } from "services/offersService";
+import Heading from "components/Heading/Heading";
+import { FC, useEffect, useId, useState } from "react";
 import supabase from "services/baseService";
-import ModalQuickView from "./OffersComponents/ModalQuickView";
+import { offersService } from "services/offersService";
+import { DEMO_LARGE_PRODUCTS } from "./SectionSliderLargeProduct2";
 export interface SectionSliderLargeProductProps {
   className?: string;
   itemClassName?: string;
@@ -118,11 +114,9 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
               </Heading>
               <div className="glide__track" data-glide-el="track">
                 <ul className="glide__slides">
-                  <div style={{width: "400px"}} className="w-screen h-96 flex flex-row">
-                    {slide.images.map((img) => (
-                      <img src={img} alt={slide.name} />
-                    ))}
-                  </div>
+                  {slide.images.map((img) => (
+                    <img src={img} alt={slide.name} />
+                  ))}
                 </ul>
               </div>
             </div>
