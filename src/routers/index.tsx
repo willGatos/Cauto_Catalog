@@ -25,7 +25,6 @@ const MyRoutes = () => {
     <BrowserRouter>
       <Toaster />
       <ScrollToTop />
-      <SiteHeader />
       <Routes>
         {pages.map(({ component: Component, path }, index) => {
 

@@ -20,7 +20,9 @@ const HeaderFilterSection: FC<HeaderFilterSectionProps> = ({
   return (
     <div className={`flex flex-col relative ${className}`}>
       <Heading>Descubre todos nuestros Productos</Heading>
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-6 lg:space-y-0 lg:space-x-2 "></div>
+      <div 
+        className="flex flex-col lg:flex-row lg:items-center justify-between space-y-6 lg:space-y-0 lg:space-x-2 ">
+      </div>
 
       <Transition
         show={isOpen}

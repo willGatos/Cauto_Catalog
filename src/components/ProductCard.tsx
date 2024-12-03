@@ -15,10 +15,7 @@ export interface ProductCardProps {
   isLiked?: boolean;
 }
 
-const ProductCard = ({
-  className = "",
-  data,
-}) => {
+const ProductCard = ({ className = "", data }) => {
   const {
     id,
     name,
@@ -28,11 +25,11 @@ const ProductCard = ({
     variants,
     variantType,
     status,
-    images=[],
+    images = [],
   } = data;
   const [variantActive, setVariantActive] = React.useState(0);
   const [showModalQuickView, setShowModalQuickView] = React.useState(false);
-  const descRef = useRef(null)
+  const descRef = useRef(null);
 
   const notifyAddTocart = ({ size }: { size?: string }) => {
     toast.custom(
@@ -59,11 +56,13 @@ const ProductCard = ({
     );
   };
 
-  useEffect(()=>{descRef.current.innerHTLM = description},[descRef])
+  useEffect(() => {
+    descRef.current.innerHTLM = description;
+  }, [descRef]);
 
   const renderProductCartOnNotify = ({ size }: { size?: string }) => {
     return (
-      <div className="flex ">
+      <div className="flex">
         <div className="h-24 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-slate-100">
           <img
             src={images[0]}
@@ -74,7 +73,7 @@ const ProductCard = ({
 
         <div className="ml-4 flex flex-1 flex-col">
           <div>
-            <div className="flex justify-between ">
+            <div className="flex justify-between">
               <div>
                 <h3 className="text-base font-medium ">{name}</h3>
                 <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -230,22 +229,22 @@ const ProductCard = ({
       </div>
     );
   };
+  
   return (
     <>
       <div
         className={`nc-ProductCard relative flex flex-col bg-transparent ${className}`}
         data-nc-id="ProductCard"
-        onClick={()=> setShowModalQuickView(true)}
+        onClick={() => setShowModalQuickView(true)}
       >
-       {/* <Link to={"/product-detail"} className="absolute inset-0"></Link> */}
+        {/* <Link to={"/product-detail"} className="absolute inset-0"></Link> */}
 
         <div className="relative flex-shrink-0 bg-slate-50 dark:bg-slate-300 rounded-3xl overflow-hidden z-1 group">
-         
-            <NcImage
-              containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
-              src={images[0]}
-              className="object-cover w-full h-full drop-shadow-xl"
-            />
+          <NcImage
+            containerClassName="flex aspect-w-11 aspect-h-12 w-full h-0"
+            src={images[0]}
+            className="object-cover w-full h-full drop-shadow-xl"
+          />
 
           {/* <ProductStatus status={status} />
           
@@ -254,28 +253,26 @@ const ProductCard = ({
           sizes ? renderSizeList() :
           */}
 
-          
-
-          { renderGroupButtons()}
+          {renderGroupButtons()}
         </div>
 
-        <div className="space-y-4 px-2.5 pt-3 pb-2.5 flex justify-around items-start">
+        <div className="px-2.5 pt-3 pb-2.5 flex justify-around items-center">
           {/*renderVariants()*/}
           <div>
-            <div>
-              <h2
-                className={`nc-ProductCard__title text-base font-semibold transition-colors`}
-              >
-                {name}
-              </h2>
-              <p ref={descRef}  className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
-                
-              </p>
-            </div>
+            <h2
+              className={`nc-ProductCard__title text-base font-semibold transition-colors`}
+            >
+              {name}
+            </h2>
+            {descRef && (
+              <p
+                ref={descRef}
+                className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}
+              />
+            )}
           </div>
           <div className="flex justify-between items-start ">
             <Prices price={price} />
-            
           </div>
         </div>
       </div>

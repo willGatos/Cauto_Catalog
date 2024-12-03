@@ -7,6 +7,10 @@ import { useParams } from "react-router-dom";
 import supabase from "services/baseService";
 import SectionGridFeatureItems from "./SectionGridFeatureItems";
 import SectionHero3 from "components/SectionHero/SectionHero3";
+import { CategoriesNav } from "./Components/Categories";
+import { Category } from "./lib/mock-data";
+import { Product } from "components/ProductQuickView";
+import SiteHeader from "containers/SiteHeader";
 
 interface Slide {
   id: number;
@@ -30,6 +34,8 @@ function PageHome2() {
   });
   const [isLoading, setIsLoading] = useState(true);
 
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
     setIsLoading(true);
     const fetchAndSetShop = async () => {
@@ -42,14 +48,35 @@ function PageHome2() {
           secondaryDescription: secondary_description,
           logo,
         }); // Update state with valid data
-        setIsLoading(false);
       } else {
         console.error(error); // Handle error appropriately
         // Optionally set an error state or handle it as needed
       }
+      return data;
     };
 
-    fetchAndSetShop();
+    const getProducts = async (si) => {
+      const { data: categories } = await supabase
+        .from("categories")
+        .select("*")
+        .eq("shop_id", si);
+
+      const { data: productsData } = await supabase
+        .from("products")
+        .select("*, categories(id)")
+        .eq("shop_id", si);
+
+      return { categories, products: productsData };
+    };
+
+    fetchAndSetShop().then((shop) => {
+      getProducts(shop.id).then((res) => {
+        console.log(res);
+        setProducts(res.products);
+        setCategories(res.categories);
+        setIsLoading(false);
+      });
+    });
   }, [identifier]);
 
   const fetchShop = async (identifier) => {
@@ -69,6 +96,11 @@ function PageHome2() {
   }
 
   return (
+    <>
+    <SiteHeader 
+    logo={shop.logo}
+    />
+
     <div className="nc-PageHome2 relative overflow-hidden">
       <div className="container px-4">
         {/* SECTION HERO */}
@@ -86,10 +118,15 @@ function PageHome2() {
         </div>
       </div>
 
-      <div id="Grid" className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
-        <SectionGridFeatureItems shopId={shop.id} />
+      <div id="Grid">
+        <CategoriesNav products={products} categories={categories} />
       </div>
+      {/* <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
+        <SectionGridFeatureItems shopId={shop.id} />
+      </div> */}
     </div>
+    </>
+    
   );
 }
 

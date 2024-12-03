@@ -7,9 +7,11 @@ import CartDropdown from "./CartDropdown";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
-export interface MainNav2LoggedProps {}
+export interface MainNav2LoggedProps {
+  logo;
+}
 
-const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
+const MainNav2Logged: FC<MainNav2LoggedProps> = ({ logo }) => {
   const inputRef = React.createRef<HTMLInputElement>();
   const [showSearchForm, setShowSearchForm] = useState(false);
   const navigate = useNavigate();
@@ -76,7 +78,8 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
         </div>
 
         <div className="lg:flex-1 flex items-center">
-          <Logo className="flex-shrink-0" />
+          <img src={logo} />
+          {/* <Logo className="flex-shrink-0" /> */}
         </div>
 
         <div className="flex-[2] hidden lg:flex justify-center mx-4">
@@ -92,11 +95,6 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = () => {
               {renderMagnifyingGlassIcon()}
             </button>
           )}
-          
-          {/*
-          <AvatarDropdown /> 
-          <CartDropdown /> 
-          */}
         </div>
       </div>
     );
