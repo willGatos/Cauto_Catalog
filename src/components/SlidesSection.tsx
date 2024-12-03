@@ -60,7 +60,6 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
   ]);
   useEffect(() => {
     // @ts-ignoreconst [offers, setOffers] = useState<Offer[]>([]);
-
     const OPTIONS: Glide.Options = {
       perView: 3,
       gap: 32,
@@ -101,6 +100,8 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     // return () => {
     //   slider.destroy();
     // };
+
+    console.log("SOL", sliders);
   }, [UNIQUE_CLASS]);
 
   return (

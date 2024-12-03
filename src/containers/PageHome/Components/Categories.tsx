@@ -20,7 +20,8 @@ export function CategoriesNav({ categories, products }) {
   );
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [otherProducts, setOtherProducts] = useState<Product[]>([]);
-
+  let classForGrid =
+    "grid gap-4 m-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-2";
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
       const scrollAmount = 200;
@@ -150,7 +151,7 @@ export function CategoriesNav({ categories, products }) {
 
       <AnimatePresence>
         <motion.div
-          className="grid gap-4 m-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 grid-cols-2"
+          className={classForGrid}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -195,40 +196,22 @@ export function CategoriesNav({ categories, products }) {
           </h2>
           <AnimatePresence>
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+              className={classForGrid}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {otherProducts.map((product) => (
+              {otherProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden"
+                  className="rounded-lg overflow-hidden"
                   layout
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <img
-                    alt={product.name}
-                    src={product.images[0]}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-2">
-                      {product.name}
-                    </h3>
-                    <p
-                      className="text-gray-600 mb-2"
-                      dangerouslySetInnerHTML={{
-                        __html: product.description || "",
-                      }}
-                    ></p>
-                    <p className="text-xl font-bold">
-                      ${product.standard_price.toFixed(2)}
-                    </p>
-                  </div>
+                  <ProductCard data={product} key={index} />
                 </motion.div>
               ))}
             </motion.div>

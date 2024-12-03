@@ -1,8 +1,7 @@
-import React, { FC, useState, useEffect } from "react";
 import HeaderFilterSection from "components/HeaderFilterSection";
 import ProductCard from "components/ProductCard";
-import ButtonPrimary from "shared/Button/ButtonPrimary";
 import { Product } from "data/data";
+import { FC, useEffect, useState } from "react";
 import { productsService } from "services/productsService";
 //
 export interface SectionGridFeatureItemsProps {
