@@ -64,6 +64,9 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
       perView: 3,
       gap: 32,
       bound: true,
+      autoplay: 3000,
+      hoverpause: true,
+      type:"carousel",
       breakpoints: {
         1280: {
           gap: 28,
