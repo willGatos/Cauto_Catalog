@@ -78,8 +78,7 @@ const MainNav2Logged: FC<MainNav2LoggedProps> = ({ logo }) => {
         </div>
 
         <div className="lg:flex-1 flex items-center">
-          <img src={logo} />
-          {/* <Logo className="flex-shrink-0" /> */}
+          <img src={logo} className="w-24" />
         </div>
 
         <div className="flex-[2] hidden lg:flex justify-center mx-4">
