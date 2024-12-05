@@ -61,6 +61,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
   useEffect(() => {
     // @ts-ignoreconst [offers, setOffers] = useState<Offer[]>([]);
     const OPTIONS: Glide.Options = {
+      startAt: 0,
       perView: 3,
       gap: 32,
       bound: true,
