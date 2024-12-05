@@ -66,7 +66,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
       bound: true,
       autoplay: 3000,
       hoverpause: true,
-      type:"carousel",
+      type: "carousel",
       breakpoints: {
         1280: {
           gap: 28,
@@ -117,7 +117,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
                 {slide.name}
               </Heading>
               <div className="glide__track" data-glide-el="track">
-                <ul className="glide__slides">
+                <ul className="glide__slides" style={{ width: "auto" }}>
                   {slide.images.map((img) => (
                     <img src={img} alt={slide.name} />
                   ))}
