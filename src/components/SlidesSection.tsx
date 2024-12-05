@@ -120,15 +120,12 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
               <div className="glide__track" data-glide-el="track">
                 <ul className="glide__slides" style={{ width: "auto" }}>
                   {slide.images.map((img) => (
-                    <img src={img} alt={slide.name} />
+                    <img src={img} className="glide__slide" alt={slide.name} />
                   ))}
                 </ul>
               </div>
             </div>
           ))}
-        {offers.map((offer, index) => (
-          <li className={`glide__slide`} key={index}></li>
-        ))}
       </div>
     </>
   );
