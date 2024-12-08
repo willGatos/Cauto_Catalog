@@ -61,7 +61,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
   useEffect(() => {
     // @ts-ignoreconst [offers, setOffers] = useState<Offer[]>([]);
     const OPTIONS: Glide.Options = {
-      startAt: 0,
+      //startAt: 0,
       perView: 3,
       gap: 32,
       bound: true,
@@ -118,9 +118,14 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
                 {slide.name}
               </Heading>
               <div className="glide__track" data-glide-el="track">
-                <ul className="glide__slides" style={{ width: "auto" }}>
-                  {slide.images.map((img) => (
-                    <img src={img} className="glide__slide" alt={slide.name} />
+                <ul className="glide__slides">
+                  {slide.images.map((img, key) => (
+                    <img
+                      src={img}
+                      key={key}
+                      className="glide__slide"
+                      alt={slide.name}
+                    />
                   ))}
                 </ul>
               </div>

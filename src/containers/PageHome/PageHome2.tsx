@@ -97,36 +97,33 @@ function PageHome2() {
 
   return (
     <>
-    <SiteHeader 
-    logo={shop.logo}
-    />
+      <SiteHeader logo={shop.logo} />
 
-    <div className="nc-PageHome2 relative overflow-hidden">
-      <div className="container px-4">
-        {/* SECTION HERO */}
-        <SectionHero3 shops={shop} />
+      <div className="nc-PageHome2 relative overflow-hidden">
+        <div className="container px-4">
+          {/* SECTION HERO */}
+          <SectionHero3 shops={shop} />
 
-        <SlidesSection shopId={shop.id} />
+          <SlidesSection shopId={shop.id} />
 
-        <SectionSliderLargeProduct shopId={shop.id} />
-        <div className="relative py-24">
-          <SectionSliderProductCard
-            shopId={shop.id}
-            data={SPORT_PRODUCTS.filter((_, i) => i < 8)}
-            subHeading="New Sports equipment"
-          />
+          <SectionSliderLargeProduct shopId={shop.id} />
+          <div className="relative py-24">
+            <SectionSliderProductCard
+              shopId={shop.id}
+              data={SPORT_PRODUCTS.filter((_, i) => i < 8)}
+              subHeading="New Sports equipment"
+            />
+          </div>
         </div>
-      </div>
 
-      <div id="Grid">
-        <CategoriesNav products={products} categories={categories} />
-      </div>
-      {/* <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
+        <div id="Grid">
+          <CategoriesNav products={products} categories={categories} />
+        </div>
+        {/* <div className="container relative space-y-24 my-24 lg:space-y-32 lg:my-32">
         <SectionGridFeatureItems shopId={shop.id} />
       </div> */}
-    </div>
+      </div>
     </>
-    
   );
 }
 

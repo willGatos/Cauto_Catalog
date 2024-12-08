@@ -42,6 +42,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     // @ts-ignoreconst [offers, setOffers] = useState<Offer[]>([]);
 
     const OPTIONS: Glide.Options = {
+
       perView: 3,
       gap: 32,
       bound: true,
@@ -110,7 +111,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
                   </li>
                 ))}
 
-                <li className={`glide__slide   `}>
+                <li className={`glide__slide`}>
                   <a href={"#Grid"} className="block relative group">
                     <div className="relative rounded-2xl overflow-hidden h-[410px]">
                       <div className="h-[410px] bg-black/5 dark:bg-neutral-800"></div>
