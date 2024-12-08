@@ -39,7 +39,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
   const UNIQUE_CLASS = "glidejs" + id.replace(/:/g, "_");
 
   useEffect(() => {
-    // @ts-ignoreconst [offers, setOffers] = useState<Offer[]>([]);
+    // @ts-ignoreconst
 
     const OPTIONS: Glide.Options = {
       perView: 3,

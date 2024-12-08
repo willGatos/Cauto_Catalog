@@ -94,15 +94,15 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     };
 
     window.addEventListener("load", handleLoad);
-      getSlides(shopId)
-        .then((res) => {
-          console.log("RESPONSE", res);
-          setSliders(res);
-          slider.mount(); // Mount here if you haven't already
-          slider.update(); // Update after setting offers
-        })
-        .catch((e) => console.log(":", e));
-    
+    getSlides(shopId)
+      .then((res) => {
+        console.log("RESPONSE", res);
+        setSliders(res);
+        slider.mount(); // Mount here if you haven't already
+        slider.update(); // Update after setting offers
+      })
+      .catch((e) => console.log(":", e));
+
     return () => {
       slider.destroy();
       window.removeEventListener("load", handleLoad);
@@ -121,12 +121,13 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
               <div className="glide__track" data-glide-el="track">
                 <ul className="glide__slides">
                   {slide.images.map((img, key) => (
-                    <img
-                      src={img}
-                      key={key}
-                      className="glide__slide"
-                      alt={slide.name}
-                    />
+                    <li className={`glide__slide`} key={key}>
+                      <img
+                        src={img}
+                        className="glide__slide"
+                        alt={slide.name}
+                      />
+                    </li>
                   ))}
                 </ul>
               </div>
