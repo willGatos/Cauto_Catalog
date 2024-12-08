@@ -78,9 +78,6 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     };
   }, [UNIQUE_CLASS]);
 
-  useEffect(() => {
-    console.log(offers);
-  }, [offers]);
   return (
     <>
       {offers.length > 0 && (

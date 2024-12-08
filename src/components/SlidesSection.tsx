@@ -89,18 +89,23 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
       },
     };
     let slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
+    const handleLoad = () => {
+      slider.mount();
+    };
 
-    getSlides(shopId)
-      .then((res) => {
-        console.log("RESPONSE", res);
-        setSliders(res);
-        slider.mount(); // Mount here if you haven't already
-        slider.update(); // Update after setting offers
-      })
-      .catch((e) => console.log(":", e));
-
+    window.addEventListener("load", handleLoad);
+      getSlides(shopId)
+        .then((res) => {
+          console.log("RESPONSE", res);
+          setSliders(res);
+          slider.mount(); // Mount here if you haven't already
+          slider.update(); // Update after setting offers
+        })
+        .catch((e) => console.log(":", e));
+    
     return () => {
       slider.destroy();
+      window.removeEventListener("load", handleLoad);
     };
   }, [UNIQUE_CLASS]);
 
