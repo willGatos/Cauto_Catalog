@@ -61,13 +61,14 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
   useEffect(() => {
     // @ts-ignoreconst
     const OPTIONS: Glide.Options = {
-      //startAt: 0,
+      startAt: 0,
       perView: 3,
       gap: 32,
       bound: true,
-      /* autoplay: 3000,
+      autoplay: 3000,
       hoverpause: true,
-      type: "carousel", */
+      focusAt: "center",
+      type: "carousel",
       breakpoints: {
         1280: {
           gap: 28,
