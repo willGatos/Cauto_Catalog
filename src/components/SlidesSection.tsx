@@ -59,7 +59,7 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     },
   ]);
   useEffect(() => {
-    // @ts-ignoreconst [offers, setOffers] = useState<Offer[]>([]);
+    // @ts-ignoreconst
     const OPTIONS: Glide.Options = {
       //startAt: 0,
       perView: 3,
@@ -89,26 +89,18 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
       },
     };
     let slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
-    const handleLoad = () => {
-      slider.mount();
-    };
 
-    window.addEventListener("load", handleLoad);
-    try {
-      getSlides(shopId)
-        .then((res) => {
-          console.log("RESPONSE", res);
-          setSliders(res);
-          slider.mount(); // Mount here if you haven't already
-          slider.update(); // Update after setting offers
-        })
-        .catch((e) => console.log(":", e));
-    } catch (error) {
-      console.error(error);
-    }
+    getSlides(shopId)
+      .then((res) => {
+        console.log("RESPONSE", res);
+        setSliders(res);
+        slider.mount(); // Mount here if you haven't already
+        slider.update(); // Update after setting offers
+      })
+      .catch((e) => console.log(":", e));
+
     return () => {
       slider.destroy();
-      window.removeEventListener("load", handleLoad);
     };
   }, [UNIQUE_CLASS]);
 
