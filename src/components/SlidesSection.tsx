@@ -88,9 +88,9 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
         },
       },
     };
-    try {
-      let slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
+    let slider = new Glide(`.${UNIQUE_CLASS}`, OPTIONS);
 
+    try {
       getSlides(shopId)
         .then((res) => {
           console.log("RESPONSE", res);
@@ -101,11 +101,9 @@ const SectionSliderLargeProduct: FC<SectionSliderLargeProductProps> = ({
     } catch (error) {
       console.error(error);
     }
-    // return () => {
-    //   slider.destroy();
-    // };
-
-    console.log("SOL", sliders);
+    return () => {
+      slider.destroy();
+    };
   }, [UNIQUE_CLASS]);
 
   return (
