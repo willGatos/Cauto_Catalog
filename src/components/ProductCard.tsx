@@ -19,7 +19,7 @@ const ProductCard = ({ className = "", data }) => {
   const {
     id,
     name,
-    price,
+    standard_price,
     description,
     sizes,
     variants,
@@ -84,7 +84,7 @@ const ProductCard = ({ className = "", data }) => {
                   <span>{size || "XL"}</span>
                 </p>
               </div>
-              <Prices price={price} className="mt-0.5" />
+              <Prices price={standard_price} className="mt-0.5" />
             </div>
           </div>
           <div className="flex flex-1 items-end justify-between text-sm">
@@ -229,7 +229,7 @@ const ProductCard = ({ className = "", data }) => {
       </div>
     );
   };
-  
+
   return (
     <>
       <div
@@ -272,7 +272,7 @@ const ProductCard = ({ className = "", data }) => {
             )}
           </div>
           <div className="flex justify-between items-start ">
-            <Prices price={price} />
+            <Prices price={standard_price} />
           </div>
         </div>
       </div>

@@ -16,36 +16,39 @@ export interface CollectionCard2Props {
 
 const CollectionCard2: FC<CollectionCard2Props> = ({
   className,
-  imgs = [productImgs[9], productImgs[10], productImgs[11], productImgs[8]],
+  imgs,
   name = "Product Name",
   description = "Product Description",
   price,
-  id
+  id,
 }) => {
   return (
     <div className={`CollectionCard2 group relative ${className}`}>
       <div className="relative flex flex-col">
-        <NcImage
-          containerClassName="aspect-w-8 aspect-h-5 bg-neutral-100 rounded-2xl overflow-hidden"
-          className="object-contain w-full h-full rounded-2xl"
-          src={imgs[0]}
-        />
+        {imgs[0] && (
+          <NcImage
+            containerClassName="aspect-w-8 aspect-h-5 bg-neutral-100 rounded-2xl overflow-hidden"
+            className="object-contain w-full h-full rounded-2xl"
+            src={imgs[0]}
+          />
+        )}
         <div className="grid grid-cols-3 gap-2.5 mt-2.5">
-          <NcImage
-            containerClassName="w-full h-24 sm:h-28"
-            className="object-cover w-full h-full rounded-2xl"
-            src={imgs[1]}
-          />
-          <NcImage
-            containerClassName="w-full h-24 sm:h-28"
-            className="object-cover w-full h-full rounded-2xl"
-            src={imgs[2]}
-          />
-          <NcImage
-            containerClassName="w-full h-24 sm:h-28"
-            className="object-cover w-full h-full rounded-2xl"
-            src={imgs[3]}
-          />
+          {imgs
+            .map((img, key) =>
+              key == 0
+                ? null
+                : key < 4
+                ? img && (
+                    <NcImage
+                      key={key}
+                      containerClassName="w-full h-24 sm:h-28"
+                      className="object-cover w-full h-full rounded-2xl"
+                      src={img}
+                    />
+                  )
+                : null
+            )
+            .filter(Boolean)}
         </div>
       </div>
 
@@ -58,7 +61,6 @@ const CollectionCard2: FC<CollectionCard2Props> = ({
             <span className="text-sm ">
               <span className="line-clamp-1">{description}</span>
             </span>
-            
           </div>
         </div>
         <Prices className="mt-0.5 sm:mt-1 ml-4" price={price} />

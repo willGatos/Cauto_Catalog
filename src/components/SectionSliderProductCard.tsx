@@ -29,7 +29,8 @@ async function getCatalogSections(shopId?: number) {
             id,
             name,
             description,
-            images
+            images,
+            standard_price
             )
           )
         )
