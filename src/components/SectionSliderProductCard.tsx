@@ -157,7 +157,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
                     alt={product_id.name}
                     className="w-full h-48 object-cover mb-4 rounded"
                   />
-                  <div className="flex justify-center items-center">
+                  <div className="flex justify-between items-center">
                     <h4 className="font-semibold text-lg mb-2">
                       {product_id.name}
                     </h4>
