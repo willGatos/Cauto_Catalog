@@ -18,17 +18,17 @@ import ButtonPrimary from "shared/Button/ButtonPrimary";
 import NotifyAddTocart from "./NotifyAddTocart";
 // Types.ts
 interface AttributeValue {
-  types: { name: string }
-  value: string
+  types: { name: string };
+  value: string;
 }
 
 interface Variation {
-  id: number
-  name: string
-  price: number
-  stock: number
-  pictures: string[]
-  attribute_values: AttributeValue[]
+  id: number;
+  name: string;
+  price: number;
+  stock: number;
+  pictures: string[];
+  attribute_values: AttributeValue[];
 }
 
 const variationsData: Variation[] = [
@@ -37,22 +37,29 @@ const variationsData: Variation[] = [
     name: "Camiseta Roja - Talla M",
     price: 19.99,
     stock: 50,
-    pictures: ["/placeholder.svg?height=150&width=150", "/placeholder.svg?height=150&width=150"],
+    pictures: [
+      "/placeholder.svg?height=150&width=150",
+      "/placeholder.svg?height=150&width=150",
+    ],
     attribute_values: [
       { types: { name: "Color" }, value: "Rojo" },
-      { types: { name: "Talla" }, value: "M" }
-    ]
+      { types: { name: "Talla" }, value: "M" },
+    ],
   },
   {
     id: 2,
     name: "Camiseta Azul - Talla L",
     price: 21.99,
     stock: 30,
-    pictures: ["/placeholder.svg?height=150&width=150", "/placeholder.svg?height=150&width=150", "/placeholder.svg?height=150&width=150"],
+    pictures: [
+      "/placeholder.svg?height=150&width=150",
+      "/placeholder.svg?height=150&width=150",
+      "/placeholder.svg?height=150&width=150",
+    ],
     attribute_values: [
       { types: { name: "Color" }, value: "Azul" },
-      { types: { name: "Talla" }, value: "L" }
-    ]
+      { types: { name: "Talla" }, value: "L" },
+    ],
   },
   {
     id: 3,
@@ -62,10 +69,10 @@ const variationsData: Variation[] = [
     pictures: ["/placeholder.svg?height=150&width=150"],
     attribute_values: [
       { types: { name: "Color" }, value: "Verde" },
-      { types: { name: "Talla" }, value: "S" }
-    ]
-  }
-]
+      { types: { name: "Talla" }, value: "S" },
+    ],
+  },
+];
 export interface Product {
   id: number;
   name: string;
@@ -101,7 +108,6 @@ export interface ProductVariation {
   pictures: string[];
   attribute_values: AttributeValue[];
 }
-
 
 // Interfaces for component props
 export interface ProductDetailsProps {
@@ -165,7 +171,10 @@ export interface ProductQuickViewProps {
   id: string | number;
 }
 
-const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", id = '1'}) => {
+const ProductQuickView: FC<ProductQuickViewProps> = ({
+  className = "",
+  id = "1",
+}) => {
   const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
   const [product, setProduct] = useState(initialValues);
@@ -175,7 +184,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", id = '1'}
 
   useEffect(() => {
     getProductbyId(id).then((prod) => {
-      console.log('SOL',prod);
+      console.log("SOL", prod);
       const variations = prod.product_variations.map((variation: any) => ({
         id: variation.id,
         name: variation.name,
@@ -208,51 +217,51 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", id = '1'}
 
   const variations = (variationsData) => {
     if (!variationsData || variationsData.length === 0) {
-      return (
-        <div>No variations available</div>
-      );
+      return <div>No variations available</div>;
     }
     return (
       <div className="container mx-auto p-4">
         <h2 className="text-2xl font-bold mb-6">Variaciones del Producto</h2>
         <div className="space-y-8">
           {variationsData.map((variation) => {
-            const attribute_values = variation.attribute_values ? variation.attribute_values :[];
-            console.log('s', variation)
+            const attribute_values = variation.attribute_values
+              ? variation.attribute_values
+              : [];
+            console.log("s", variation);
             const pictures = variation.pictures;
 
             return (
-            <div key={variation.id} className="border-b pb-8">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-4">
-                  <h3 className="text-xl font-semibold">{variation.name}</h3>
-                  <div className="bg-primary text-primary-foreground p-2 text-lg font-bold">
-                    ${variation.price.toFixed(2)}
+              <div key={variation.id} className="border-b pb-8">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4">
+                    <h3 className="text-xl font-semibold">{variation.name}</h3>
+                    <div className="bg-primary text-primary-foreground p-2 text-lg font-bold">
+                      ${variation.price.toFixed(2)}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {/* {attribute_values.map((attr, index) => (
+                  <div className="flex flex-wrap gap-2">
+                    {/* {attribute_values.map((attr, index) => (
                     <label key={index}>
                       {attr.types.name}: {attr.value}
                     </label>
                   ))} */}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-4">
+                  {pictures?.map((pic, index) => (
+                    <img
+                      key={index}
+                      src={pic}
+                      alt={`${variation.name} - Imagen ${index + 1}`}
+                      width={150}
+                      height={150}
+                      className="rounded-md object-cover"
+                    />
+                  ))}
                 </div>
               </div>
-              <div className="flex flex-wrap gap-4">
-                {pictures?.map((pic, index) => (
-                  <img
-                    key={index}
-                    src={pic}
-                    alt={`${variation.name} - Imagen ${index + 1}`}
-                    width={150}
-                    height={150}
-                    className="rounded-md object-cover"
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-          )}
+            );
+          })}
         </div>
       </div>
     );
@@ -299,7 +308,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", id = '1'}
     return null;
   };
 
-  const renderSectionContent = () => {
+  const renderSectionContent = (price) => {
     return (
       <div className="space-y-8">
         {/* ---------- 1 HEADING ----------  */}
@@ -312,7 +321,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", id = '1'}
             {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              price={112}
+              price={price}
             />
 
             {/* <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div>
@@ -392,7 +401,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", id = '1'}
 
         {/* SIDEBAR */}
         <div className="w-full lg:w-[50%] pt-6 lg:pt-0 lg:pl-7 xl:pl-8">
-          {renderSectionContent()}
+          {renderSectionContent(product.standard_price)}
         </div>
 
         {product.product_variations.length > 0 &&
