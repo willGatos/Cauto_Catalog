@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
 import LikeButton from "components/LikeButton";
 import { StarIcon } from "@heroicons/react/24/solid";
@@ -237,11 +237,14 @@ const getOfferWithProducts = async (offerId) => {
   return data;
 };
 export interface ProductQuickViewProps {
-  id: string
+  id: string;
   className?: string;
 }
 
-const ProductQuickView: FC<ProductQuickViewProps> = ({ id, className = "" }) => {
+const ProductQuickView: FC<ProductQuickViewProps> = ({
+  id,
+  className = "",
+}) => {
   const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
   const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
   const [product, setProduct] = useState(initialValues);
@@ -372,6 +375,24 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ id, className = "" }) => 
     );
   };
 
+  const handleDownload = (imageUrl, fileName) =>
+    useCallback(async () => {
+      try {
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${fileName}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Error downloading image:", error);
+      }
+    }, [imageUrl, fileName]);
+
   const renderStatus = () => {
     if (!status) {
       return null;
@@ -426,7 +447,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ id, className = "" }) => 
             {/* <div className="flex text-xl font-semibold">$112.00</div> */}
             <Prices
               contentClass="py-1 px-2 md:py-1.5 md:px-3 text-lg font-semibold"
-              price={112}
+              price={product.general_offer_price}
             />
 
             {/* <div className="h-6 border-l border-slate-300 dark:border-slate-700"></div>
@@ -458,7 +479,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ id, className = "" }) => 
         <div className="flex space-x-3.5">
           <ButtonPrimary
             className="flex-1 flex-shrink-0"
-            //onClick={notifyAddTocart}
+            onClick={() => handleDownload(product.images[0], product.name)}
           >
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
             <span className="ml-3">Descargar Imagen</span>

@@ -11,7 +11,7 @@ import { PRODUCTS } from "data/data";
 import detail1JPG from "images/products/detail1.jpg";
 import detail2JPG from "images/products/detail2.jpg";
 import detail3JPG from "images/products/detail3.jpg";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import supabase from "services/baseService";
 import ButtonPrimary from "shared/Button/ButtonPrimary";
@@ -353,7 +353,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
         <div className="flex space-x-3.5">
           <ButtonPrimary
             className="flex-1 flex-shrink-0"
-            onClick={notifyAddTocart}
+            onClick={() => handleDownload(product.images[0], product.name)}
           >
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
             <span className="ml-3">Descargar Imagen</span>
@@ -377,14 +377,30 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
     );
   };
 
+  const handleDownload = async (imageUrl, fileName) =>{
+      try {
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `${fileName}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error("Error downloading image:", error);
+      }
+  }
   return (
     <div className={`nc-ProductQuickView ${className}`}>
       {/* MAIn */}
-      <div className="lg:flex">
+      <div className="">
         {/* CONTENT */}
-        <div className="w-full lg:w-[50%] ">
+        <div className="sm:w-full">
           {/* HEADING */}
-          <div className="lg:grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-5 xl:mt-5">
+          <div className="grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 ">
             {product.images.map((item, index) => {
               return (
                 <div key={index} className="">
@@ -400,7 +416,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
         </div>
 
         {/* SIDEBAR */}
-        <div className="w-full lg:w-[50%] pt-6 lg:pt-0 lg:pl-7 xl:pl-8">
+        <div className="w-full lg:w-[50%] pt-6 xl:pl-8">
           {renderSectionContent(product.standard_price)}
         </div>
 

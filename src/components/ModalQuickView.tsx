@@ -48,7 +48,7 @@ const ModalQuickView: FC<ModalQuickViewProps> = ({
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <div className="relative inline-flex xl:py-8 w-full max-w-5xl max-h-full">
+            <div className="relative inline-flex xl:py-8 max-w-[500px] w-full max-h-full">
               <div
                 className="flex-1 flex overflow-hidden max-h-full p-8 w-full text-left align-middle transition-all transform lg:rounded-2xl bg-white 
               dark:bg-neutral-900 dark:border dark:border-slate-700 dark:text-slate-100 shadow-xl"
