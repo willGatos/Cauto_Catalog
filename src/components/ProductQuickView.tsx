@@ -416,7 +416,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({
         </div>
 
         {/* SIDEBAR */}
-        <div className="w-full lg:w-[50%] pt-6 xl:pl-8">
+        <div className="w-full pt-6 xl:pl-8">
           {renderSectionContent(product.standard_price)}
         </div>
 
