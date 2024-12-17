@@ -88,3 +88,14 @@ self.addEventListener("message", (event) => {
 });
 
 // Any other custom service worker logic can go here.
+
+self.addEventListener('fetch', async event => {
+  try {
+    const response = await caches.match(event.request);
+    if (response) {
+      event.respondWith(response);
+    }
+  } catch (error) {
+    console.error('Error en la estrategia CacheFirst:', error);
+  }
+});
