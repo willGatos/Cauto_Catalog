@@ -71,6 +71,7 @@ registerRoute(
   })
 );
 
+
 googleFontsCache();
 
 offlineFallback();
