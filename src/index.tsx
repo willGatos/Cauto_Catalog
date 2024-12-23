@@ -6,7 +6,6 @@ import "./index.css";
 import "./fonts/line-awesome-1.3.0/css/line-awesome.css";
 import "rc-slider/assets/index.css";
 import  * as serviceWorker  from "./serviceWorkerRegistration"
-//
 import App from "./App";
 import { CartProvider } from "./context/CartContex";
 

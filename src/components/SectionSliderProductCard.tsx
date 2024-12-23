@@ -164,7 +164,7 @@ const SectionSliderProductCard: FC<SectionSliderProductCardProps> = ({
                     <Prices
                       price={product_id.standard_price}
                       className="text-xl font-bold"
-                    ></Prices>
+                    />
                   </div>
                 </div>
               </>

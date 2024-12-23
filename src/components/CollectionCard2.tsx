@@ -63,7 +63,7 @@ const CollectionCard2: FC<CollectionCard2Props> = ({
             </span>
           </div>
         </div>
-        <Prices className="mt-0.5 sm:mt-1 ml-4" price={price} />
+        {price && <Prices className="mt-0.5 sm:mt-1 ml-4" price={price} />}
       </div>
     </div>
   );
