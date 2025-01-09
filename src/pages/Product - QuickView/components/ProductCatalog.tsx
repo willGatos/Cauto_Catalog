@@ -1,24 +1,20 @@
-import { FC, useEffect, useState } from "react"
-import { Product } from '../types/product'
-import { getProductbyId } from '../services/productService'
-import { ProductCard } from './ProductCard'
-import Loading from '../app/loading'
+import { FC, useEffect, useState } from "react";
+import { Product } from "../types/product";
+import { getProductbyId } from "../services/productService";
+import { ProductCard } from "./ProductCard";
+import Loading from "../app/loading";
 
 interface ProductCatalogProps {
-  className?: string;
-  id?: string;
+  id?: string | number;
 }
 
-const ProductCatalog: FC<ProductCatalogProps> = ({
-  className = "",
-  id = "93",
-}) => {
-  const [product, setProduct] = useState<Product | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+const ProductCatalog: FC<ProductCatalogProps> = ({ id = "93" }) => {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     getProductbyId(id)
       .then((prod) => {
         const variations = prod.product_variations.map((variation: any) => ({
@@ -31,15 +27,15 @@ const ProductCatalog: FC<ProductCatalogProps> = ({
             types: { name: attr.types.name },
             value: attr.value,
           })),
-          enabled: variation.enabled
-        }))
+          enabled: variation.enabled,
+        }));
         setProduct({
           ...prod,
           product_variations: variations,
           images: prod.images || [],
           attributes: Array.from(
             new Set(
-              variations.flatMap((v) => 
+              variations.flatMap((v) =>
                 v.attribute_values.map((av) => av.types.name)
               )
             )
@@ -56,23 +52,28 @@ const ProductCatalog: FC<ProductCatalogProps> = ({
               )
             ),
           })),
-        })
+        });
       })
       .catch((err) => {
-        console.error("Error fetching product:", err)
-        if (err.message === "JSON object requested, multiple (or no) rows returned") {
-          setError("Lo sentimos, no se pudo encontrar el producto solicitado.")
+        console.error("Error fetching product:", err);
+        if (
+          err.message ===
+          "JSON object requested, multiple (or no) rows returned"
+        ) {
+          setError("Lo sentimos, no se pudo encontrar el producto solicitado.");
         } else {
-          setError("Ocurrió un error al cargar el producto. Por favor, inténtalo de nuevo más tarde.")
+          setError(
+            "Ocurrió un error al cargar el producto. Por favor, inténtalo de nuevo más tarde."
+          );
         }
       })
       .finally(() => {
-        setLoading(false)
-      })
-  }, [id])
+        setLoading(false);
+      });
+  }, [id]);
 
   if (loading) {
-    return <Loading />
+    return <Loading />;
   }
 
   if (error) {
@@ -81,11 +82,10 @@ const ProductCatalog: FC<ProductCatalogProps> = ({
         <h2 className="text-2xl font-bold mb-4 text-red-600">Error</h2>
         <p className="text-gray-700">{error}</p>
       </div>
-    )
+    );
   }
 
-  return product ? <ProductCard product={product} /> : null
-}
+  return product ? <ProductCard product={product} /> : null;
+};
 
-export default ProductCatalog
-
+export default ProductCatalog;

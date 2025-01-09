@@ -3,9 +3,11 @@ import { FC, Fragment } from "react";
 import { useLocation } from "react-router-dom";
 import ButtonClose from "shared/ButtonClose/ButtonClose";
 import ProductQuickView from "./ProductQuickView";
+import { ProductCard } from "pages/Product - QuickView/components/ProductCard";
+import ProductCatalog from "pages/Product - QuickView/components/ProductCatalog";
 
 export interface ModalQuickViewProps {
-  id: string;
+  id: string | number;
   show: boolean;
   onCloseModalQuickView: () => void;
 }
@@ -58,7 +60,7 @@ const ModalQuickView: FC<ModalQuickViewProps> = ({
                 </span>
 
                 <div className="flex-1 overflow-y-auto rounded-xl hiddenScrollbar">
-                  <ProductQuickView id={id} />
+                  <ProductCatalog id={id} />
                 </div>
               </div>
             </div>
