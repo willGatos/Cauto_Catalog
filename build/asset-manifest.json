@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.510d515d.css",
-    "main.js": "./static/js/main.988b901c.js",
+    "main.css": "./static/css/main.1f5062a0.css",
+    "main.js": "./static/js/main.06924761.js",
     "static/js/14.3dc251b5.chunk.js": "./static/js/14.3dc251b5.chunk.js",
     "static/media/la-brands-400.svg": "./static/media/la-brands-400.331115337bc9be66667a.svg",
     "static/media/la-solid-900.svg": "./static/media/la-solid-900.0f874d69730f8631d632.svg",
@@ -76,12 +76,12 @@
     "static/media/facebook.svg": "./static/media/facebook.6396ea13f7bdf8bfb51af5c3376cd2f3.svg",
     "index.html": "./index.html",
     "static/media/Moon.svg": "./static/media/Moon.63bde57361d8406e4c4b179370e7a690.svg",
-    "main.510d515d.css.map": "./static/css/main.510d515d.css.map",
-    "main.988b901c.js.map": "./static/js/main.988b901c.js.map",
+    "main.1f5062a0.css.map": "./static/css/main.1f5062a0.css.map",
+    "main.06924761.js.map": "./static/js/main.06924761.js.map",
     "14.3dc251b5.chunk.js.map": "./static/js/14.3dc251b5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.510d515d.css",
-    "static/js/main.988b901c.js"
+    "static/css/main.1f5062a0.css",
+    "static/js/main.06924761.js"
   ]
 }

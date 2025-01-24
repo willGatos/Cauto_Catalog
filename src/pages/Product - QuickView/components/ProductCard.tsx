@@ -36,7 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
   }, [product.product_variations, selectedAttributes]);
 
   useEffect(() => {
-    setIsLoadingImages(true);
+    // setIsLoadingImages(true);
     if (currentVariation) {
       setSelectedImages(currentVariation.pictures);
     } else {
@@ -104,7 +104,6 @@ export function ProductCard({ product }: ProductCardProps) {
               {product.name}
             </h1>
           </div>
-
           <div>
             {selectedImages.length > 0 ? (
               <ImageCarousel
@@ -128,7 +127,16 @@ export function ProductCard({ product }: ProductCardProps) {
               </div>
             )}
           </div>
-
+          {/* <div className="social-link-section">
+            <a
+              href={product.social_media_link}
+              className="inline-flex items-center text-indigo-600 hover:text-indigo-800"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver Más Ejemplos ↗
+            </a>
+          </div> */}
           {product.attributes.map((attribute) => (
             <div key={attribute.id} className="space-y-2">
               <h3 className="text-sm font-medium text-slate-900">
@@ -167,7 +175,11 @@ export function ProductCard({ product }: ProductCardProps) {
                 />
               </CollapsibleTrigger>
               <CollapsibleContent className="p-4 pt-0 text-sm text-slate-600">
-                {product.description}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: product.description ? product.description : "",
+                  }}
+                />
               </CollapsibleContent>
             </Collapsible>
           )}

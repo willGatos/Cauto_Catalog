@@ -45,10 +45,10 @@ export interface Product {
   images: string[];
   product_variations: Variation[];
   attributes: any[]; // Added to satisfy TypeScript error
+  social_media_link;
 }
 
 export interface ProductQuickViewProps {
   className?: string;
   id: string | number;
 }
-

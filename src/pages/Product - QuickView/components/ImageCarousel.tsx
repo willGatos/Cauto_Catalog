@@ -1,6 +1,4 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -16,19 +14,29 @@ export function ImageCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(initialLoading);
 
+  const loadImage = useCallback((src: string) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = () => resolve(src);
+      img.onerror = reject;
+    });
+  }, []);
+
   useEffect(() => {
     setIsLoading(true);
-  }, [images]);
+    loadImage(images[currentIndex])
+      .then(() => setIsLoading(false))
+      .catch(() => setIsLoading(false));
+  }, [currentIndex, images, loadImage]);
 
   const prevImage = () => {
-    setIsLoading(true);
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
 
   const nextImage = () => {
-    setIsLoading(true);
     setCurrentIndex((prevIndex) =>
       prevIndex === images.length - 1 ? 0 : prevIndex + 1
     );
@@ -48,7 +56,6 @@ export function ImageCarousel({
           isLoading ? "opacity-0" : "opacity-100"
         }`}
         onLoad={() => setIsLoading(false)}
-        onLoadStart={() => setIsLoading(true)}
       />
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black/20 to-transparent" />
       <div className="absolute inset-0 flex items-center justify-between p-4">
